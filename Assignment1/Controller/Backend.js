@@ -10,21 +10,21 @@ app.get('/',(req,res)=>{
     connectDB();
     let data_user = getdata();
     savedata(data_user);
-    connectionclose();
+//     connectionclose();
 })
 
 app.listen(3000);
 
 const url = "mongodb+srv://webDev:12ali12@clusterwebdev.iyxo2oe.mongodb.net/?retryWrites=true&w=majority";
 
+mongoose.set('strictQuery', false);
+
 const connectionParams={
     useNewUrlParser: true,
     // useCreateIndex: true,
     useUnifiedTopology: true 
 }
-// console.log("123213123");
-
-async function connectDB(){
+function connectDB(){
 mongoose.connect(url,connectionParams)
     .then( () => {
         console.log('Connected to the database');
@@ -35,13 +35,7 @@ mongoose.connect(url,connectionParams)
 
   }
 
-
-
-async function connectionclose(){
-mongoose.connection.close();
-}
-
-async function getdata(){
+function getdata(){
   let data_user = new user({
       Username : 'ali',
       Password : '12ali'
@@ -50,7 +44,7 @@ async function getdata(){
   }
   
   
-  async function savedata(data_user){
+  function savedata(data_user){
   data_user.save(function (err) {
     if (err) {
         console.log("nahi huha bhai");
@@ -59,8 +53,5 @@ async function getdata(){
     }
   });
   }
-// const c = user.find({},function(err,docs){
 
-//     exports.array = docs
-// })
 
