@@ -1,29 +1,36 @@
 const mongoose = require('mongoose');
 const express = require('express');
+const User_Routes = require('../Routes/User_Routes');
+const bodyparser = require('body-parser');
 const app = express();
-const user = require('..\\Controller\\Schema.js');
 
-
-app.set('view engine','ejs');
-
-app.get('/',(req,res)=>{
-    connectDB();
-    let data_user = getdata();
-    savedata(data_user);
-//     connectionclose();
-})
-
-app.listen(3000);
 
 const url = "mongodb+srv://webDev:12ali12@clusterwebdev.iyxo2oe.mongodb.net/?retryWrites=true&w=majority";
-
-mongoose.set('strictQuery', false);
 
 const connectionParams={
     useNewUrlParser: true,
     // useCreateIndex: true,
     useUnifiedTopology: true 
 }
+connectDB();
+
+
+app.set('view engine','ejs');
+app.use(bodyparser.urlencoded({extended:true}));
+app.use(bodyparser.json());
+
+app.use('/user',User_Routes)
+
+// app.get('/user',(req,res)=>{
+//     res.send('hello');
+// })
+app.listen(3000);
+
+
+
+mongoose.set('strictQuery', false);
+
+
 function connectDB(){
 mongoose.connect(url,connectionParams)
     .then( () => {
@@ -34,24 +41,3 @@ mongoose.connect(url,connectionParams)
     })
 
   }
-
-function getdata(){
-  let data_user = new user({
-      Username : 'ali',
-      Password : '12ali'
-  })
-  return data_user;
-  }
-  
-  
-  function savedata(data_user){
-  data_user.save(function (err) {
-    if (err) {
-        console.log("nahi huha bhai");
-    } else {
-        console.log("hugaya bhai");
-    }
-  });
-  }
-
-
