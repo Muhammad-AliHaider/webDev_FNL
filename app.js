@@ -10,6 +10,12 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
+app.get('/', function(req, res){
+    res.render('form');
+});
+app.use(upload.array()); 
+app.use(express.static('public'));
+
 app.use(cookieparser());
 app.use(logger('dev'));
 app.use(bodyParser.urlencoded({ extended: true}))
