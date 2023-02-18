@@ -13,7 +13,6 @@ dotenv.config();
 app.get('/', function(req, res){
     res.render('form');
 });
-app.use(upload.array()); 
 app.use(express.static('public'));
 
 app.use(cookieparser());

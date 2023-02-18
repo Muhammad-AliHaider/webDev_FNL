@@ -6,6 +6,12 @@ const jwt = require('jsonwebtoken');
 
 module.exports = {
     create: function(req, res, next) {
+        if (!(req.body.UserName||req.body.Password||req.body.Name||req.body.Age||req.body.Email||req.body.Role||req.body.CreditCard)){
+            next('Incomplete Information');
+        }
+        if(req.body.role != 'Student'||req.body.role != 'Teacher'||req.body.role != 'Admin'){
+            next('Incorrect Role')
+        }
         UserModel.create({ UserName: req.body.UserName, Password: req.body.Password, Name: req.body.Name,Age: req.body.Age,Gender: req.body.Gender,Email: req.body.Email,Role: req.body.Role, CourseOffered: [], CourseEnrolled: [], Notification:[],ProfilePic : req.body.ProfilePic,BIO: req.body.BIO, CreditCard: req.body.CreditCard, CreatedAt: new Date()}, function (err, result) {
             if (err){ 
                 next(err);
@@ -21,8 +27,8 @@ module.exports = {
              next(err);
             } else {
                 if(bcrypt.compareSync(req.body.Password, userInfo.Password)) {
-                    const token = jwt.sign({id: userInfo._id}, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '300s' },{data: new Date().getTime()/1000});
-                    const rtoken = jwt.sign({id: userInfo._id}, process.env.REFRESH_TOKEN_SECRET , { expiresIn: '7d' },{data: new Date().getTime()}/1000);
+                    const token = jwt.sign({id: userInfo._id,role: userInfo.Role}, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '300s' },{data: new Date().getTime()/1000});
+                    const rtoken = jwt.sign({id: userInfo._id,role: userInfo.Role}, process.env.REFRESH_TOKEN_SECRET , { expiresIn: '7d' },{data: new Date().getTime()}/1000);
                     res.cookie('jwt', rtoken, { httpOnly: true, 
                      });
                     res.cookie('acc', token, { httpOnly: true, 

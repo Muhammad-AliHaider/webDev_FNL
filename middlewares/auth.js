@@ -27,8 +27,7 @@ const verifyToken = (req, res,next) => {
                     }
                     else {
                         const accessToken = jwt.sign({
-                            id: decoded._id
-                        }, process.env.ACCESS_TOKEN_SECRET, {
+                            id: decoded._id,role: decoded.role}, process.env.ACCESS_TOKEN_SECRET, {
                             expiresIn: '300s'
                         });
                         res.cookie('acc', accessToken, { httpOnly: true, 
@@ -48,7 +47,22 @@ const verifyToken = (req, res,next) => {
     });
 };
 
+const verifyAdmin = (req, res,next) => {
+    
+    var token = req.cookies.acc;
+    if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
+    const decodedToken = jwt.decode(token, {
+        complete: true
+    });
+    if (decodedToken.payload.role != 'Admin'){
+        return res.status(406).json({ message: 'Unauthorized: Only Admin Allowed' });
+    }
+    next();
+};
+
+
 module.exports = verifyToken;
+module.exports = verifyAdmin;
 
 
 
