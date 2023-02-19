@@ -37,16 +37,6 @@ const UserSchema = new Schema({
         trim: true,  
         required: true
     },
-    CourseOffered: {
-        type: [String],
-        trim: true,  
-        required: false
-    },
-    CourseEnrolled: {
-        type: [String],
-        trim: true,  
-        required: false
-    },
     Notification: {
         type: [String],
         trim: true,  
