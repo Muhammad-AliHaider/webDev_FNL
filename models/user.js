@@ -73,7 +73,7 @@ const UserSchema = new Schema({
         required: true
     },
     Role: {
-        type: int,
+        type: Number,
         trim: true,  
         required: true
     },
