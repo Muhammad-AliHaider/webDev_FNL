@@ -54,7 +54,33 @@ const verifyAdmin = (req, res,next) => {
     const decodedToken = jwt.decode(token, {
         complete: true
     });
-    if (decodedToken.payload.role != 'Admin'){
+    if (decodedToken.payload.role != 1){
+        return res.status(406).json({ message: 'Unauthorized: Only Admin Allowed' });
+    }
+    next();
+};
+
+const verifyStudent = (req, res,next) => {
+    
+    var token = req.cookies.acc;
+    if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
+    const decodedToken = jwt.decode(token, {
+        complete: true
+    });
+    if (decodedToken.payload.role != 3){
+        return res.status(406).json({ message: 'Unauthorized: Only Admin Allowed' });
+    }
+    next();
+};
+
+const verifyTeacher = (req, res,next) => {
+    
+    var token = req.cookies.acc;
+    if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
+    const decodedToken = jwt.decode(token, {
+        complete: true
+    });
+    if (decodedToken.payload.role != 2){
         return res.status(406).json({ message: 'Unauthorized: Only Admin Allowed' });
     }
     next();

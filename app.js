@@ -1,6 +1,10 @@
 const express = require('express')
 const logger = require('morgan');
-const users = require('./routes/User');
+const SignIn = require('./routes/SignIn');
+const SignUp = require('./routes/SignUp');
+const Admin = require('./routes/Admin');
+const Student = require('./routes/Student');
+const Teacher = require('./routes/Teacher');
 const bodyParser = require('body-parser')
 const app = express();
 const dbConfig = require('./config/database.config');
@@ -9,17 +13,17 @@ const cookieparser = require('cookie-parser');
 const dotenv = require('dotenv');
 
 dotenv.config();
-
-app.get('/', function(req, res){
-    res.render('form');
-});
 app.use(express.static('public'));
 
 app.use(cookieparser());
 app.use(logger('dev'));
 app.use(bodyParser.urlencoded({ extended: true}))
 app.use(bodyParser.json())
-app.use('/user',users)
+app.use('/admin',Admin)
+app.use('/student',Student)
+app.use('/signin',SignIn)
+app.use('/signup',SignUp)
+app.use('/teacher',Teacher)
 app.use(function(req, res, next) {
     let err = new Error('Not Found');
        err.status = 404;
