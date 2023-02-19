@@ -20,6 +20,6 @@ TeacherSchema.pre('save', function(next){
     next();
 });
 
-var teachers = new mongoose.model('Teacher',UserSchema);
+var teachers = new mongoose.model('Teacher',TeacherSchema);
 
 module.exports = teachers;

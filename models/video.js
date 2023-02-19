@@ -35,6 +35,6 @@ VideoSchema.pre('save', function(next){
     next();
 });
 
-var videos = new mongoose.model('Video',UserSchema);
+var videos = new mongoose.model('Video',VideoSchema);
 
 module.exports = teachers;

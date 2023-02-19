@@ -1,5 +1,7 @@
 const bcrypt = require('bcrypt');
 const UserModel = require('../models/user');
+const TeacherModel = require('../models/teacher');
+const StudentModel = require('../models/student');
 const jwt = require('jsonwebtoken');
 
 
@@ -18,6 +20,12 @@ module.exports = {
                 next(err);
             }
             else
+                if(req.body.Role == 2){
+                    TeacherModel.create({ID: result._id , CourseOffered : []})
+                }
+                else{
+                    StudentModel.create({ID: result._id , CourseEnrolled : []})
+                }
                 res.json({status: "success", message: "User added successfully!!!", data: null});  
         });
     },

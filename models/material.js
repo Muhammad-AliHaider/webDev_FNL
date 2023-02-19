@@ -36,6 +36,6 @@ MaterialSchema.pre('save', function(next){
     next();
 });
 
-var materials = new mongoose.model('Material',UserSchema);
+var materials = new mongoose.model('Material',MaterialSchema);
 
 module.exports = materials;

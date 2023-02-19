@@ -14,8 +14,8 @@ const StudentSchema = new Schema({
         trim: true,  
     },
     Scores: {
-        QuizId : {type : String, required:true },
-        Score : {type: Number, required:true}
+        QuizId : {type : String},
+        Score : {type: Number}
     }
 
 });
@@ -24,6 +24,6 @@ StudentSchema.pre('save', function(next){
     next();
 });
 
-var students = new mongoose.model('Student',UserSchema);
+var students = new mongoose.model('Student',StudentSchema);
 
 module.exports = students;
