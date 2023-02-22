@@ -14,6 +14,18 @@ const TeacherSchema = new Schema({
         trim: true,  
         required: true
     },
+    CreatedAt: {
+        type: Date,
+        trim: true,
+        default: Date.now(),
+        required: true
+    },
+    UpdatedAt: {
+        type: Date,
+        trim: true,
+        default: Date.now(),
+        required: true
+    }
 });
 
 TeacherSchema.pre('save', function(next){

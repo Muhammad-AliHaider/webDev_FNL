@@ -7,7 +7,9 @@ const CourseSchema = new Schema({
     CourseID: {
         type: String,
         trim: true,  
-        required: true  
+        required: true  ,
+        unique: true
+
     },
     Name: {
         type: String,
@@ -37,7 +39,24 @@ const CourseSchema = new Schema({
     CreatedAt: {
         type: Date,
         trim: true,  
-        required: true
+        required: true,
+        default: Date.now()
+    },
+    Students:[{
+        studentId:{
+            type: string,
+            required: true
+        },  
+        enrolledAt:{
+            type: Date,
+            default: Date.now()
+        }
+    }],
+    UpdatedAt: {
+        type: Date,
+        trim: true,  
+        required: true,
+        default: Date.now()
     },
 });
 

@@ -15,13 +15,30 @@ const QuizSchema = new Schema({
         required: true  
     },
     Content: {
-        Questions : {type : [String], required:true },
-        Options : {type: [[String]], required:true},
-        Answers : {type : [String], required:true }
+        type: [{question:{
+            type: string,
+            required:true
+             },
+            choices:{ 
+                type:[string],
+                repuired:true
+            },
+            answer:{
+                type: Number,
+                required: true
+            }}],
+        default: undefined    
     },
     CreatedAt: {
         type: Date,
-        trim: true,  
+        trim: true,
+        default: Date.Now(),  
+        required: true
+    },
+    UpdatedAt: {
+        type: Date,
+        trim: true,
+        default: Date.Now(),  
         required: true
     }
 

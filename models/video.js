@@ -29,6 +29,19 @@ const VideoSchema = new Schema({
         trim: true,  
         required: true
     },
+    CreatedAt: {
+        type: Date,
+        trim: true,
+        default: Date.Now(),  
+        required: true
+    },
+    UpdatedAt: {
+        type: Date,
+        trim: true,
+        default: Date.Now(),  
+        required: true
+    },
+    
 });
 
 VideoSchema.pre('save', function(next){

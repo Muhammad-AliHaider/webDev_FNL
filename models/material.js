@@ -26,7 +26,14 @@ const MaterialSchema = new Schema({
     },
     CreatedAt: {
         type: Date,
-        trim: true,  
+        trim: true,
+        default: Date.now(),
+        required: true
+    },
+    UpdatedAt: {
+        type: Date,
+        trim: true,
+        default: Date.now(),
         required: true
     }
 

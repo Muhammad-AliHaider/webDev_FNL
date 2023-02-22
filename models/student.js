@@ -10,14 +10,33 @@ const StudentSchema = new Schema({
         required: true  
     },
     CourseEnrolled: {
-        type: [String],
-        trim: true,  
+        type: [{
+            id:{
+                type:String,
+                required: true
+            },
+            progress:{
+                type:{},
+                required:true,
+            }
+        }],
+        trim: true,
+        required:true,
+        default:[]  
     },
-    Scores: {
-        QuizId : {type : String},
-        Score : {type: Number}
+    CreatedAt: {
+        type: Date,
+        trim: true,
+        default: Date.now(),
+        required: true
+    },
+    UpdatedAt: {
+        type: Date,
+        trim: true,
+        default: Date.now(),
+        required: true
     }
-
+    
 });
 
 StudentSchema.pre('save', function(next){

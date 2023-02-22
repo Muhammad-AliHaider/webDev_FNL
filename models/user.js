@@ -15,7 +15,8 @@ const UserSchema = new Schema({
     Password: {
         type: String,
         trim: true,  
-        required: true
+        required: true,
+        minlength: 8
     },
     Name: {
         type: String,
@@ -29,23 +30,37 @@ const UserSchema = new Schema({
     },
     Gender: {
         type: String,
+        enum: ["Male", "Female", "Other"],
         trim: true,  
         required: false
     },
     Email: {
         type: String,
         trim: true,  
-        required: true
+        required: true,
+        unique: true,
+        match: /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
     },
     Notification: {
-        type: [String],
-        trim: true,  
-        required: false
+        type: [{
+            message: {
+              type: String,
+              required: true
+            },
+            timestamp: {
+              type: Date,
+              required: true
+            }
+          }],
+          required: true,
+          default: []
     },
     ProfilePic: {
         type: String,
         trim: true,  
-        required: false
+        required: false,
+        match: /^(http|https):\/\/[^]+$/
     },
     BIO: {
         type: String,
@@ -53,9 +68,20 @@ const UserSchema = new Schema({
         required: false
     },
     CreditCard: {
-        type: Number,
-        trim: true,  
-        required: true
+        cardNumber:{
+            type: string,
+            required: true,
+        },
+        expirationDate:{
+            type: string,
+            required: true,
+            match:/^(0[1-9]|1[0-2])\/[0-9]{2}$/
+        },
+        securityCode:{
+            type:string,
+            required:true,
+            match:/^[0-9]{3,4}$/
+        }
     },
     CreatedAt: {
         type: Date,
@@ -64,6 +90,7 @@ const UserSchema = new Schema({
     },
     Role: {
         type: Number,
+        enum:[1,2,3],
         trim: true,  
         required: true
     },
