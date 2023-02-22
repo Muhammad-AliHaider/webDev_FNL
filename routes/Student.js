@@ -9,8 +9,8 @@ router.get('/profile/get',verifyStudent,verifyToken,StudentController.read);
 router.patch('/profile/update',verifyStudent,verifyToken, StudentController.update);
 router.delete('/profile/delete',verifyStudent,verifyToken, StudentController.destroy);
 
-router.get('/notification/get',verifyStudent,verifyToken,StudentController.notifget);
-router.patch('/notfication/delete',verifyStudent,verifyToken, StudentController.notifdel);
+//router.get('/notification/get',verifyStudent,verifyToken,StudentController.notifget);
+//router.patch('/notfication/delete',verifyStudent,verifyToken, StudentController.notifdel);
 
 
 
