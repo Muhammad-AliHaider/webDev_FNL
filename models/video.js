@@ -32,13 +32,13 @@ const VideoSchema = new Schema({
     CreatedAt: {
         type: Date,
         trim: true,
-        default: Date.Now(),  
+        default: new Date(),  
         required: true
     },
     UpdatedAt: {
         type: Date,
         trim: true,
-        default: Date.Now(),  
+        default: new Date(),  
         required: true
     },
     
@@ -50,4 +50,4 @@ VideoSchema.pre('save', function(next){
 
 var videos = new mongoose.model('Video',VideoSchema);
 
-module.exports = teachers;
+module.exports = videos;
