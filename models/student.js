@@ -16,7 +16,7 @@ const StudentSchema = new Schema({
                 required: true
             },
             progress:{
-                type:{},
+                type:Number,
                 required:true,
             }
         }],

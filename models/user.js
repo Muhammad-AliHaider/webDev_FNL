@@ -53,7 +53,6 @@ const UserSchema = new Schema({
               required: true
             }
           }],
-          required: true,
           default: []
     },
     ProfilePic: {
@@ -69,16 +68,16 @@ const UserSchema = new Schema({
     },
     CreditCard: {
         cardNumber:{
-            type: string,
+            type: String,
             required: true,
         },
         expirationDate:{
-            type: string,
+            type: String,
             required: true,
             match:/^(0[1-9]|1[0-2])\/[0-9]{2}$/
         },
         securityCode:{
-            type:string,
+            type:String,
             required:true,
             match:/^[0-9]{3,4}$/
         }
