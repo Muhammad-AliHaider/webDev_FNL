@@ -21,6 +21,14 @@ router.delete('/notification/delete',verifyStudent,verifyToken, StudentControlle
 
 router.get('/video/get',verifyStudent,verifyToken,StudentController.get_video);
 router.get('/videos/get',verifyStudent,verifyToken,StudentController.get_videos);
+router.get('/video/search',verifyStudent,verifyToken,StudentController.selectvideo);
+
+router.get('/material/get',verifyStudent,verifyToken,StudentController.get_material);
+router.get('/materials/get',verifyStudent,verifyToken,StudentController.get_materials);
+router.get('/material/search',verifyStudent,verifyToken,StudentController.selectmaterial);
+
+
+
 
 
 

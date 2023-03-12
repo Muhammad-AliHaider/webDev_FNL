@@ -3,6 +3,7 @@ const UserModel = require('../models/user');
 const StudentModel = require('../models/student');
 const CourseModel = require('../models/course');
 const VideoModel = require('../models/video');
+const MaterialModel = require('../models/material');
 const jwt = require('jsonwebtoken');
 
 
@@ -220,12 +221,78 @@ module.exports = {
                 const courses = await CourseModel.find();
                 if(req.body.Name){
                     const inter = courses.filter(object =>{
-                        return object.Name.includes(req.body.Name);
+                        return object.Name.includes((req.body.Name).toUpperCase());
                     })
                     res.status(200).json(inter);
                 }
                 else{
                     res.status(200).json(courses);
+                }
+            } catch(error) {
+                res.status(404).json({message: error.message});
+            }
+        };
+    },
+
+
+    selectvideo: async function (req,res){
+        {
+            try {
+                const videos = await VideoModel.find();
+                if(req.body.Name){
+                    const inter = videos.filter(object =>{
+                        return object.Name.includes((req.body.Name).toUpperCase());
+                    })
+                    res.status(200).json(inter);
+                }
+                else{
+                    res.status(200).json(videos);
+                }
+            } catch(error) {
+                res.status(404).json({message: error.message});
+            }
+        };
+    },
+
+    get_materials: async function (req,res){
+        {
+            try {
+                const materials = await MaterialModel.find();
+                res.status(200).json(materials);
+            } catch(error) {
+                res.status(404).json({message: error.message});
+            }
+        };
+    },
+
+    get_material: async function (req,res){
+        await MaterialModel.findOne({_id: req.body.MaterialID}, { useFindAndModify: false }).then(data => {
+            if (!data) {
+                res.status(404).send({
+                    message: `Material not found.`
+                });
+            }else{
+                res.status(200).json({data: data});
+            }
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message
+            });
+        });
+    },
+
+    selectmaterial: async function (req,res){
+        {
+            try {
+                const materials = await MaterialModel.find();
+                if(req.body.Name){
+                    const inter = materials.filter(object =>{
+                        return object.Name.includes((req.body.Name).toUpperCase());
+                    })
+                    res.status(200).json(inter);
+                }
+                else{
+                    res.status(200).json(materials);
                 }
             } catch(error) {
                 res.status(404).json({message: error.message});
