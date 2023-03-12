@@ -68,7 +68,7 @@ const verifyStudent = (req, res,next) => {
         complete: true
     });
     if (decodedToken.payload.role != 3){
-        return res.status(406).json({ message: 'Unauthorized: Only Student Allowed' });
+        return res.status(406).json({ message: 'Unauthorized: Only Teachers Allowed' });
     }
     next();
 };
@@ -90,6 +90,7 @@ const verifyTeacher = (req, res,next) => {
 module.exports = verifyToken;
 module.exports = verifyAdmin;
 module.exports = verifyStudent;
+module.exports = verifyTeacher;
 
 
 

@@ -1,57 +1,185 @@
-const CourseModel = require('../models/user');
+const CourseModel = require('../models/course');
+const mongoose = require('mongoose');
 
 module.exports = {
     create: async function(req, res, next) {
         if (!(req.body.Name||req.body.Description||req.body.Thumbnail)){
             res.json({status: "failure", message: "Incomplete Information", data: null});
         }
-        const forLength = await CourseModel.find({})[0].CourseID;
-        await CourseModel.create({CourseID: forLength+1, Name: req.body.Name, Description: req.body.Description, Thumbnail: req.body.Thumbnail, CreatedAt:new Date() ,VideoID: [], MaterialID: []}, function (err, result) {
+        await CourseModel.create({ Name: req.body.Name, Description: req.body.Description, Thumbnail: req.body.Thumbnail, CreatedAt:new Date()}, function (err, result) {
             if (err){ 
-                next(err);
+                console.log(err);
+                res.json({status: "failure", message: "Course not added!!!", data: null});
             }
-            else
-                res.json({status: "success", message: "Course added successfully!!!", data: null});  
+            else{
+                res.json({status: "success", message: "Course added successfully!!!", data: result});
+            }  
         }
         );
     },
 
     read: async function(req, res, next) {
-        const ser = CourseModel.find({CourseID : req.body.CourseID});
-        if(ser != null){
-            res.json({status: "success", message: "Course found!!!", data: ser});
+        if(req.body._id){
+            try{
+                const ser = await CourseModel.find({_id : req.body._id}).populate('VideoID').populate('MaterialID');
+                if(ser.length != 0){
+                    res.json({status: "success", message: "Course found!!!", data: ser});
+                }
+                else{
+                    res.json({status: "failure", message: "Course not found!!!", data: null});
+                }
+            }
+            catch(err){
+                res.json({status: "failure", message: "Course not found!!!", data: null});
+            }
         }
         else{
-            res.json({status: "failure", message: "Course not found!!!", data: null});
+            try{
+            const ser = await CourseModel.find({});
+            if(ser.length != 0){
+                res.json({status: "success", message: "Course found!!!", data: ser});
+            }
+            else{
+                res.json({status: "failure", message: "Course not found!!!", data: null});
+            }}
+            catch(err){
+                res.json({status: "failure", message: "Course not found!!!", data: null});
+            }
         }
 
     },
 
     update:  async function (req,res){
-        await CourseModel.findOneAndUpdate({CourseID : req.body.CourseID}, req.body, { useFindAndModify: false }).then(data => {
-            if (!data) {
-                res.status(404).send({
-                    message: `Course not found.`
+        if(req.body._id){
+            await CourseModel.findOneAndUpdate({_id : req.body._id}, req.body, { useFindAndModify: false }).then(data => {
+                if (data.length == 0) {
+                    res.status(404).send({
+                        message: `Course not found.`
+                    });
+                }else{
+                    res.send({ message: "Course updated successfully." })
+                }
+            }).catch(err => {
+                res.status(500).send({
+                    message: err.message
                 });
-            }else{
-                res.send({ message: "Course updated successfully." })
-            }
-        }).catch(err => {
-            res.status(500).send({
-                message: err.message
             });
-        });
+        }
+        else{
+            res.json({status: "failure", message: "Incomplete Information", data: null});
+        }
     },
 
     destroy: async function (req,res){
-        await  CourseModel.findOneAndRemove({CourseID: req.body.CourseID}, function (err, result) {
-            if (err){
-                next(err);
-            }
-            else{
-                res.json({status: "success", message: "Course deleted successfully!!!", data: null});
-            }
-        });
+        if(req.body._id){
+            await  CourseModel.findOneAndRemove({_id: req.body._id}).then(data => {
+                if (data.length == 0) {
+                    res.status(404).send({
+                        message: `Course not found.`
+                    });
+                }
+                else{
+                    res.send({ message: "Course deleted successfully." })
+                }
+            }).catch(err => {
+                res.status(500).send({
+                    message: err.message
+                });
+            });
+        }
+        else{
+            res.json({status: "failure", message: "Incomplete Information", data: null});
+        }
+    },
+
+    add_video: async function (req,res){
+        if(req.body._id){
+            await CourseModel.findOneAndUpdate({_id : req.body._id},{ $push: { VideoID: req.body.VideoID } }, { useFindAndModify: false }).then(data => {
+                if (data.length == 0) {
+                    res.status(404).send({
+                        message: `Course not found.`
+                    });
+                }
+                else{
+                    res.send({ message: "Video added successfully." })
+                }
+            }).catch(err => {
+                res.status(500).send({
+                    message: err.message
+                });
+            });
+            
+        }else{
+            res.json({status: "failure", message: "ID not given", data: null});
+        }
+    },
+
+    remove_video: async function (req,res){
+        if(req.body._id){
+            await CourseModel.findOneAndUpdate({_id : req.body._id},{ $pull: { VideoID: req.body.VideoID } }, { useFindAndModify: false }).then(data => {
+                if (data.length == 0) {
+                    res.status(404).send({
+                        message: `Course not found.`
+                    });
+                }
+                else{
+                    res.send({ message: "Video removed successfully." })
+                }
+            }).catch(err => {
+                res.status(500).send({
+                    message: err.message
+                });
+            });
+
+        }else{
+            res.json({status: "failure", message: "ID not given", data: null});
+        }
+    },
+
+    add_material: async function (req,res){
+        if(req.body._id){
+            
+            await CourseModel.findOneAndUpdate({_id : req.body._id},{ $push: { MaterialID: req.body.MaterialID } }, { useFindAndModify: false }).then(data => {
+                if (data.length == 0) {
+                    res.status(404).send({
+                        message: `Course not found.`
+                    });
+                }
+                else{
+                    res.send({ message: "Material added successfully." })
+                }
+            }).catch(err => {
+                res.status(500).send({
+                    message: err.message
+                });
+            });
+
+        }else{
+            res.json({status: "failure", message: "ID not given", data: null});
+        }
+    },
+
+    remove_material: async function (req,res){
+        if(req.body._id){
+            
+            await CourseModel.findOneAndUpdate({_id : req.body._id},{ $pull: { MaterialID: req.body.MaterialID } }, { useFindAndModify: false }).then(data => {
+                if (data.length == 0) {
+                    res.status(404).send({
+                        message: `Course not found.`
+                    });
+                }
+                else{
+                    res.send({ message: "Material removed successfully." })
+                }
+            }).catch(err => {
+                res.status(500).send({
+                    message: err.message
+                });
+            });
+            
+        }else{
+            res.json({status: "failure", message: "ID not given", data: null});
+        }
     },
 
 }

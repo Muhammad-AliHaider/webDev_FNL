@@ -1,6 +1,8 @@
 
 const UserModel = require('../models/user');
-const TeacherModel = require('../models/user');
+const TeacherModel = require('../models/teacher');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 
 module.exports = {
 
@@ -12,7 +14,7 @@ module.exports = {
                     complete: true
                 });
                 const user = await UserModel.findOne({_id : decodedToken.payload.id});
-                const teacher = await TeacherModel.findOne({ID : decodedToken.payload.id});
+                const teacher = await TeacherModel.findOne({ID : decodedToken.payload.id}).populate('CourseOffered');
                 res.status(200).json({data: user,teacher});
             } catch(error) {
                 res.status(404).json({message: error.message});
@@ -25,7 +27,12 @@ module.exports = {
         const decodedToken = jwt.decode(token, {
             complete: true
         });
-        await UserModel.findOneAndUpdate({_id : decodedToken.payload.id}, req.body, { useFindAndModify: false }).then(data => {
+
+        if(req.body.Password){
+            req.body.Password = await bcrypt.hashSync(req.body.Password, 10);
+        }
+
+        await UserModel.findOneAndUpdate({_id : decodedToken.payload.id}, req.body, { useFindAndModify: true }).then(data => {
             if (!data) {
                 res.status(404).send({
                     message: `User not found.`
@@ -55,6 +62,45 @@ module.exports = {
           });
     }
     },
+
+    add_courses: async function (req,res){
+        var token = req.cookies.acc;
+        const decodedToken = jwt.decode(token, {
+            complete: true
+            });
+            await TeacherModel.findOneAndUpdate({ID: decodedToken.payload.id}, {$push: {CourseOffered: req.body.CourseID}}, { useFindAndModify: false }).then(data => {
+                if (data.length == 0) {
+                    res.status(404).send({
+                        message: `User not found.`
+                    });
+                }else{
+                    res.send({ message: "User updated successfully." })
+                }
+            }).catch(err => {
+                res.status(500).send({
+                    message: err.message
+                });
+            });
+    },
+    remove_courses: async function (req,res){
+        var token = req.cookies.acc;
+        const decodedToken = jwt.decode(token, {
+            complete: true
+            });
+            await TeacherModel.findOneAndUpdate({ID: decodedToken.payload.id}, {$pull: {CourseOffered: req.body.CourseID}}, { useFindAndModify: false }).then(data => {
+                if (data.length == 0) {
+                    res.status(404).send({
+                        message: `User not found.`
+                    });
+                }else{
+                    res.send({ message: "User updated successfully." })
+                }
+            }).catch(err => {
+                res.status(500).send({
+                    message: err.message
+                });
+            });
+    }
 }
 
 

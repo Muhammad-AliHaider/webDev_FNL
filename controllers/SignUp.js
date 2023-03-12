@@ -21,10 +21,10 @@ module.exports = {
             }
             else
                 if(req.body.Role == 2){
-                    TeacherModel.create({ID: result._id , CourseOffered : []})
+                    TeacherModel.create({ID: result._id })
                 }
                 else{
-                    StudentModel.create({ID: result._id , CourseEnrolled : []})
+                    StudentModel.create({ID: result._id })
                 }
                 res.json({status: "success", message: "User added successfully!!!", data: null});  
         });

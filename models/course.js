@@ -4,11 +4,6 @@ var mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const CourseSchema = new Schema({
-    CourseID: {
-        type: String,
-        trim: true,  
-        required: true  
-    },
     Name: {
         type: String,
         trim: true,  
@@ -25,14 +20,12 @@ const CourseSchema = new Schema({
         required: true  
     },
     VideoID: {
-        type: [String],
-        trim: true,  
-        required: true  
+        type: [mongoose.Schema.Types.ObjectId],  
+        ref: 'Video' 
     },
     MaterialID: {
-        type: [String],
-        trim: true,  
-        required: true
+        type: [mongoose.Schema.Types.ObjectId],  
+        ref: 'Material'
     },
     CreatedAt: {
         type: Date,

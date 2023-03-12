@@ -10,9 +10,8 @@ const TeacherSchema = new Schema({
         required: true  
     },
     CourseOffered: {
-        type: [String],
-        trim: true,  
-        required: true
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'Course'
     },
 });
 

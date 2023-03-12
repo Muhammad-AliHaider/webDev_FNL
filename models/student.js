@@ -10,11 +10,15 @@ const StudentSchema = new Schema({
         required: true  
     },
     CourseEnrolled: {
-        type: [String],
+        type: mongoose.Schema.Types.ObjectId,
         trim: true,  
+        ref: 'Course'
     },
     Scores: {
-        QuizId : {type : String},
+        QuizId : {
+            type : [mongoose.Schema.Types.ObjectId], 
+            ref: 'Quiz'
+        },
         Score : {type: Number}
     }
 

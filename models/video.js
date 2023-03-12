@@ -4,16 +4,6 @@ var mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const VideoSchema = new Schema({
-    CourseID: {
-        type: String,
-        trim: true,  
-        required: true  
-    },
-    ID: {
-        type: String,
-        trim: true,  
-        required: true  
-    },
     Name: {
         type: String,
         trim: true,  
@@ -25,9 +15,9 @@ const VideoSchema = new Schema({
         required: true
     },
     QuizID: {
-        type: String,
+        type: [mongoose.Schema.Types.ObjectId],
         trim: true,  
-        required: true
+        ref: 'Quiz'
     },
 });
 
@@ -37,4 +27,4 @@ VideoSchema.pre('save', function(next){
 
 var videos = new mongoose.model('Video',VideoSchema);
 
-module.exports = teachers;
+module.exports = videos;

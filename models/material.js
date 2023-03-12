@@ -4,16 +4,6 @@ var mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const MaterialSchema = new Schema({
-    CourseID: {
-        type: String,
-        trim: true,  
-        required: true  
-    },
-    ID: {
-        type: String,
-        trim: true,  
-        required: true  
-    },
     Name: {
         type: String,
         trim: true,  

@@ -31,12 +31,10 @@ app.use(function(req, res, next) {
 });
 
 app.use(function(err, req, res, next) {
-    console.log(err);
+    // console.log(err);
     
     if(err.status === 404)
       res.status(404).json({message: "Not found"});
-    else 
-       res.status(500).json({message: "Something looks wrong :( !!!"});
 });
 
 

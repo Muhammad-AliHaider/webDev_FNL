@@ -8,7 +8,9 @@ const router = express.Router();
 router.get('/',verifyAdmin,verifyToken,AdminController.read);
 router.patch('/',verifyAdmin,verifyToken, AdminController.update);
 router.delete('/',verifyAdmin,verifyToken, AdminController.destroy);
-router.post('/register', AdminController.create);
+// router.post('/register', AdminController.create);
+
+// router.get("/abc" , AdminController.abc)
 
 
 

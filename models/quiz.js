@@ -4,20 +4,10 @@ var mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const QuizSchema = new Schema({
-    CourseID: {
-        type: String,
-        trim: true,  
-        required: true  
-    },
-    ID: {
-        type: String,
-        trim: true,  
-        required: true  
-    },
-    Content: {
-        Questions : {type : [String], required:true },
-        Options : {type: [[String]], required:true},
-        Answers : {type : [String], required:true }
+    Quiz_card: {
+        // index: { unique: true, sparse: true },
+        type : [mongoose.Schema.Types.ObjectId], 
+        ref: 'Quiz_Card'
     },
     CreatedAt: {
         type: Date,
