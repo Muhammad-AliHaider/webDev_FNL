@@ -30,7 +30,24 @@ const CourseSchema = new Schema({
     CreatedAt: {
         type: Date,
         trim: true,  
-        required: true
+        required: true,
+        default: Date.now()
+    },
+    Students:[{
+        studentId:{
+            type: String,
+            required: true
+        },  
+        enrolledAt:{
+            type: Date,
+            default: Date.now()
+        }
+    }],
+    UpdatedAt: {
+        type: Date,
+        trim: true,  
+        required: true,
+        default: Date.now()
     },
 });
 

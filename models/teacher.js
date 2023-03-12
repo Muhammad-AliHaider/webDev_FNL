@@ -13,6 +13,18 @@ const TeacherSchema = new Schema({
         type: [mongoose.Schema.Types.ObjectId],
         ref: 'Course'
     },
+    CreatedAt: {
+        type: Date,
+        trim: true,
+        default: Date.now(),
+        required: true
+    },
+    UpdatedAt: {
+        type: Date,
+        trim: true,
+        default: Date.now(),
+        required: true
+    }
 });
 
 TeacherSchema.pre('save', function(next){

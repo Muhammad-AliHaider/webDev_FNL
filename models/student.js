@@ -10,18 +10,33 @@ const StudentSchema = new Schema({
         required: true  
     },
     CourseEnrolled: {
-        type: mongoose.Schema.Types.ObjectId,
-        trim: true,  
-        ref: 'Course'
+        type: [{
+            id:{
+                type:String,
+                required: true
+            },
+            progress:{
+                type:Number,
+                required:true,
+            }
+        }],
+        trim: true,
+        required:true,
+        default:[]  
     },
-    Scores: {
-        QuizId : {
-            type : [mongoose.Schema.Types.ObjectId], 
-            ref: 'Quiz'
-        },
-        Score : {type: Number}
+    CreatedAt: {
+        type: Date,
+        trim: true,
+        default: Date.now(),
+        required: true
+    },
+    UpdatedAt: {
+        type: Date,
+        trim: true,
+        default: Date.now(),
+        required: true
     }
-
+    
 });
 
 StudentSchema.pre('save', function(next){

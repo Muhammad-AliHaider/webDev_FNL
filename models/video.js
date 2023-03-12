@@ -19,6 +19,19 @@ const VideoSchema = new Schema({
         trim: true,  
         ref: 'Quiz'
     },
+    CreatedAt: {
+        type: Date,
+        trim: true,
+        default: new Date(),  
+        required: true
+    },
+    UpdatedAt: {
+        type: Date,
+        trim: true,
+        default: new Date(),  
+        required: true
+    },
+    
 });
 
 VideoSchema.pre('save', function(next){

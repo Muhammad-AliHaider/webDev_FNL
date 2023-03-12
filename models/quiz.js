@@ -11,7 +11,14 @@ const QuizSchema = new Schema({
     },
     CreatedAt: {
         type: Date,
-        trim: true,  
+        trim: true,
+        default: Date.Now(),  
+        required: true
+    },
+    UpdatedAt: {
+        type: Date,
+        trim: true,
+        default: Date.Now(),  
         required: true
     }
 
