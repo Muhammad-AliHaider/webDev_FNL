@@ -6,7 +6,6 @@ const QuizModel = require('../models/quiz');
 module.exports = {
     create: async function(req, res, next) {
         
-        // console.log(quiz.Content.Card_ID)
         await QuizModel.create({CreatedAt: new Date()} , function (err, result) {
             if (err){ 
                 console.log(err);

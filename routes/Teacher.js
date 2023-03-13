@@ -7,8 +7,9 @@ const CourseController = require('../controllers/Course');
 const QuizController = require('../controllers/Quiz');
 const Quiz_cardController = require('../controllers/Quiz_card');
 
-const verifyToken = require('../middlewares/auth');
-const verifyTeacher = require('../middlewares/auth');
+const verify = require('../middlewares/auth');
+const verifyToken = verify.verifyToken;
+const verifyTeacher = verify.verifyTeacher;
 
 
 // Teacher Management

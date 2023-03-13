@@ -1,7 +1,8 @@
 const jwt = require("jsonwebtoken");
 User = require("../models/user");
 
-const verifyToken = (req, res,next) => {
+module.exports = {
+verifyToken: function(req, res,next) {
     
     var token = req.cookies.acc;
     if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
@@ -13,8 +14,7 @@ const verifyToken = (req, res,next) => {
         const decodedToken = jwt.decode(token, {
             complete: true
         });
-        console.log(decodedToken.payload.exp)
-        console.log(new Date().getTime()/1000)
+    
         if(new Date().getTime()/1000> decodedToken.payload.exp){
             if (req.cookies?.jwt) {
 
@@ -45,9 +45,9 @@ const verifyToken = (req, res,next) => {
       } 
       next();
     });
-};
+},
 
-const verifyAdmin = (req, res,next) => {
+verifyAdmin: function (req, res,next){
     
     var token = req.cookies.acc;
     if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
@@ -58,9 +58,9 @@ const verifyAdmin = (req, res,next) => {
         return res.status(406).json({ message: 'Unauthorized: Only Admin Allowed' });
     }
     next();
-};
+},
 
-const verifyStudent = (req, res,next) => {
+verifyStudent: function(req, res,next) {
     
     var token = req.cookies.acc;
     if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
@@ -68,12 +68,12 @@ const verifyStudent = (req, res,next) => {
         complete: true
     });
     if (decodedToken.payload.role != 3){
-        return res.status(406).json({ message: 'Unauthorized: Only Teachers Allowed' });
+        return res.status(406).json({ message: 'Unauthorized: Only Students Allowed' });
     }
     next();
-};
+},
 
-const verifyTeacher = (req, res,next) => {
+verifyTeacher: function(req, res,next)  {
     
     var token = req.cookies.acc;
     if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
@@ -84,13 +84,11 @@ const verifyTeacher = (req, res,next) => {
         return res.status(406).json({ message: 'Unauthorized: Only Teacher Allowed' });
     }
     next();
-};
+},
+}
 
 
-module.exports = verifyToken;
-module.exports = verifyAdmin;
-module.exports = verifyStudent;
-module.exports = verifyTeacher;
+
 
 
 
