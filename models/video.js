@@ -9,6 +9,11 @@ const VideoSchema = new Schema({
         trim: true,  
         required: true
     },
+    URL: {
+        type: String,
+        trim: true,  
+        required: true
+    },
     Thumbnail: {
         type: String,
         trim: true,  

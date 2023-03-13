@@ -6,7 +6,7 @@ const QuizModel = require('../models/quiz');
 module.exports = {
     create: async function(req, res, next) {
         
-        await QuizModel.create({CreatedAt: new Date()} , function (err, result) {
+        await QuizModel.create({Name: req.body.Name,CreatedAt: new Date()} , function (err, result) {
             if (err){ 
                 console.log(err);
                 res.json({status: "failure", message: "Quiz not added!!!", data: null});

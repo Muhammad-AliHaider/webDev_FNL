@@ -126,6 +126,9 @@ module.exports = {
                 const combined = student.CourseEnrolled.concat({id: req.body.ID,progress:0});
                 await StudentModel.findOneAndUpdate({ID: decodedToken.payload.id},{CourseEnrolled: combined}, { useFindAndModify: false })
                 const course = await CourseModel.findOne({_id: req.body.ID})
+                var enrol = course.Students
+                enrol.push(decodedToken.payload.id)
+                await CourseModel.findOneAndUpdate({_id: req.body.ID},{Students: enrol}, { useFindAndModify: false })
                 str1 = "New Course Added: "
                 str2 = str1.concat(course.Name)
                 notifgen(user,str2)
@@ -163,7 +166,6 @@ module.exports = {
     quizsubmit: async function(req,res){
         {
             try {
-                const car = await CardModel.findOne({_id: req.body.id})
                 var score = 0
                 const quiz = await QuizModel.findOne({_id: req.body.quiz_id})
                 const answer = req.body.answers
@@ -194,14 +196,18 @@ module.exports = {
                 for (let i = 0; i < student.CourseEnrolled.length; i++) {
                     if (req.body.course_id == student.CourseEnrolled[i].id){
                         const ids = student.CourseEnrolled[i].id
+                        interim = student.CourseEnrolled.filter(object =>{
+                            return object.id == ids;
+                        })
+                        var old = interim[0].progress
                         inter = student.CourseEnrolled.filter(object =>{
                             return object.id != ids;
                         })
-                        inter.push({id: ids , progress: score})
+                        inter.push({id: ids , progress: (score+old)})
                     }
                 }
                 await StudentModel.findOneAndUpdate({ID: decodedToken.payload.id},{CourseEnrolled: inter}, { useFindAndModify: false })
-                res.status(200).json({data:"Quiz Submitted Successfully" });
+                res.status(200).json({data:"Quiz Submitted Successfully", Score:score,OutOf: 10});
             } catch(error) {
                 res.status(404).json({message: error.message});
             }
