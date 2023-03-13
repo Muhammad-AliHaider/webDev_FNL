@@ -11,7 +11,7 @@ module.exports = {
                 res.json({status:"error", message: "Invalid UserName/password!!!", data:null});
             }
             else{
-                console.log(userInfo[0])
+                // console.log(userInfo[0])
                 if(bcrypt.compareSync(req.body.Password, userInfo[0].Password)) {
                     const token = jwt.sign({id: userInfo[0]._id,role: userInfo[0].Role}, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '300s' },{data: new Date().getTime()/1000});
                     const rtoken = jwt.sign({id: userInfo[0]._id,role: userInfo[0].Role}, process.env.REFRESH_TOKEN_SECRET , { expiresIn: '7d' },{data: new Date().getTime()}/1000);

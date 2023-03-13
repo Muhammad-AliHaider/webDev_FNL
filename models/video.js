@@ -14,6 +14,11 @@ const VideoSchema = new Schema({
         trim: true,  
         required: true
     },
+    URL: {
+        type: String,
+        trim: true,
+        required: true
+    },
     QuizID: {
         type: [mongoose.Schema.Types.ObjectId],
         trim: true,  

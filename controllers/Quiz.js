@@ -100,14 +100,19 @@ module.exports = {
         }
         else{
             await QuizModel.findOneAndUpdate({_id : req.body._id},{$pull: {Quiz_card: req.body.Card_ID}}, {useFindAndModify : false}).then(data => {
-                if (!data) {
+                // console.log(data);
+                if (data.length == 0) {
                     res.status(404).send({
                         message: `Quiz not found.`
                     });
                 }else{
-                    res.send({ message: "Quiz card removed successfully." })
+                    res.send({ message: "Quiz card removed successfully." , data_ : data })
                 }
-            })
+            }).catch(err => {
+                res.status(500).send({
+                    message: err.message
+                });
+            });
         }
     }
 

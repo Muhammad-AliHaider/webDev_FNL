@@ -5,22 +5,23 @@ const MaterialController = require('../controllers/Material');
 const CourseController = require('../controllers/Course');
 const QuizController = require('../controllers/Quiz');
 const Quiz_cardController = require('../controllers/Quiz_card');
-const verifyToken = require('../middlewares/auth');
-const verifyAdmin = require('../middlewares/auth');
+const verify = require('../middlewares/auth');
+const verifyToken = verify.verifyToken;
+const verifyAdmin = verify.verifyAdmin;
 const router = express.Router();
 
 
+// Admin Management
+//User Management
 router.get('/',verifyAdmin,verifyToken,AdminController.read);
-router.patch('/',verifyAdmin,verifyToken, AdminController.update);
-router.delete('/',verifyAdmin,verifyToken, AdminController.destroy);
-
+router.put('/',verifyAdmin,verifyToken, AdminController.update);
+router.delete('/delete_user',verifyAdmin,verifyToken, AdminController.destroy);
 router.post('/add_user',verifyAdmin,verifyToken,AdminController.add_user);
-// router.post('/register', AdminController.create);
+router.put('/update_user',verifyAdmin,verifyToken,AdminController.update_user);
 
-// router.get("/abc" , AdminController.abc)
-
-router.put('/add_courses',verifyAdmin,verifyToken,AdminController.add_courses_teacher);
-router.put('/remove_courses',verifyAdmin,verifyToken,AdminController.remove_courses_teacher);
+router.put('/add_courses_teacher',verifyAdmin,verifyToken,AdminController.add_courses_teacher);
+router.put('/remove_courses_teacher',verifyAdmin,verifyToken,AdminController.remove_courses_teacher);
+router.put('/add_courses_student',verifyAdmin,verifyToken,AdminController.add_course_student);
 
 
 // course management

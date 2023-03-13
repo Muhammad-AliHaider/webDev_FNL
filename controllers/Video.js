@@ -2,10 +2,10 @@ const VideoModel = require('../models/video');
 
 module.exports = {
     create: async function(req, res, next) {
-        if (!(req.body.Name && req.body.Thumbnail)){
+        if (!(req.body.Name && req.body.Thumbnail && req.body.URL)){
             res.json({status: "failure", message: "Incomplete Information", data: null});
         };
-        await VideoModel.create({ Name: req.body.Name.toUpperCase(), Thumbnail: req.body.Thumbnail, CreatedAt:new Date() }, function (err, result) {
+        await VideoModel.create({ Name: req.body.Name.toUpperCase(), Thumbnail: req.body.Thumbnail , URL : req.body.URL, CreatedAt:new Date() }, function (err, result) {
             if (err){ 
                 next(err);
             }

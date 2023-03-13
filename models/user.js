@@ -9,7 +9,8 @@ const Schema = mongoose.Schema;
 const UserSchema = new Schema({
     UserName: {
         type: String,
-        trim: true,  
+        trim: true,
+        unique: true,  
         required: true  
     },
     Password: {
@@ -38,7 +39,6 @@ const UserSchema = new Schema({
         type: String,
         trim: true,  
         required: true,
-        unique: true,
         match: /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
     },
