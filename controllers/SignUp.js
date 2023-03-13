@@ -11,7 +11,6 @@ module.exports = {
         if (!(req.body.UserName||req.body.Password||req.body.Name||req.body.Age||req.body.Email||req.body.Role||req.body.CreditCard)){
             res.json({status: "failure", message: "Incomplete Information", data: null});
         }
-        console.log(req.body.Role);
         if(req.body.Role != 3 && req.body.Role != 2 && req.body.Role != 1){
             res.json({status: "failure", message: "Incorrect Role", data: null});
         }

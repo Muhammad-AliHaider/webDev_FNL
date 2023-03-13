@@ -6,7 +6,7 @@ module.exports = {
         if (!(req.body.Name||req.body.Description||req.body.Thumbnail)){
             res.json({status: "failure", message: "Incomplete Information", data: null});
         }
-        await CourseModel.create({ Name: req.body.Name, Description: req.body.Description, Thumbnail: req.body.Thumbnail, CreatedAt:new Date()}, function (err, result) {
+        await CourseModel.create({ Name: req.body.Name.toUpperCase(), Description: req.body.Description, Thumbnail: req.body.Thumbnail, CreatedAt:new Date()}, function (err, result) {
             if (err){ 
                 console.log(err);
                 res.json({status: "failure", message: "Course not added!!!", data: null});
@@ -31,6 +31,22 @@ module.exports = {
             }
             catch(err){
                 res.json({status: "failure", message: "Course not found!!!", data: null});
+            }
+        }
+        else if(req.body.Name){
+            try {
+                const courses = await CourseModel.find();
+                if(req.body.Name){
+                    const inter = courses.filter(object =>{
+                        return object.Name.includes((req.body.Name).toUpperCase());
+                    })
+                    res.status(200).json(inter);
+                }
+                else{
+                    res.status(200).json(courses);
+                }
+            } catch(error) {
+                res.status(404).json({message: error.message});
             }
         }
         else{

@@ -5,7 +5,7 @@ module.exports = {
         if (!(req.body.Name && req.body.Thumbnail)){
             res.json({status: "failure", message: "Incomplete Information", data: null});
         };
-        await VideoModel.create({ Name: req.body.Name, Thumbnail: req.body.Thumbnail, CreatedAt:new Date() }, function (err, result) {
+        await VideoModel.create({ Name: req.body.Name.toUpperCase(), Thumbnail: req.body.Thumbnail, CreatedAt:new Date() }, function (err, result) {
             if (err){ 
                 next(err);
             }
@@ -27,6 +27,22 @@ module.exports = {
             }}
             catch(err){
                 res.json({status: "failure", message: "Video not found!!!", data: null});
+            }
+        }
+        else if(req.body.Name){
+            try {
+                const videos = await VideoModel.find();
+                if(req.body.Name){
+                    const inter = videos.filter(object =>{
+                        return object.Name.includes((req.body.Name).toUpperCase());
+                    })
+                    res.status(200).json(inter);
+                }
+                else{
+                    res.status(200).json(videos);
+                }
+            } catch(error) {
+                res.status(404).json({message: error.message});
             }
         }
         else{

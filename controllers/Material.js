@@ -6,7 +6,7 @@ module.exports = {
             res.json({status: "failure", message: "Incomplete Information", data: null});
         }
         else{
-        MaterialModel.create({ Name: req.body.Name, URL: req.body.URL, CreatedAt:new Date() }, function (err, result) {
+        MaterialModel.create({ Name: req.body.Name.toUpperCase(), URL: req.body.URL, CreatedAt:new Date() }, function (err, result) {
             if (err){ 
                 res.send({ message: err.message })
             }
@@ -30,6 +30,22 @@ module.exports = {
             }}
             catch(err){
                 res.send({ message: err.message })
+            }
+        }
+        else if(req.body.Name){
+            try {
+                const materials = await MaterialModel.find();
+                if(req.body.Name){
+                    const inter = materials.filter(object =>{
+                        return object.Name.includes((req.body.Name).toUpperCase());
+                    })
+                    res.status(200).json(inter);
+                }
+                else{
+                    res.status(200).json(materials);
+                }
+            } catch(error) {
+                res.status(404).json({message: error.message});
             }
         }
         else{
