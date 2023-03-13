@@ -4,6 +4,11 @@ var mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const QuizSchema = new Schema({
+    Name: {
+        type: String,
+        trim: true,  
+        required: true
+    },
     Quiz_card: {
         // index: { unique: true, sparse: true },
         type : [mongoose.Schema.Types.ObjectId], 

@@ -5,7 +5,7 @@ module.exports = {
         if (!(req.body.Name && req.body.Thumbnail)){
             res.json({status: "failure", message: "Incomplete Information", data: null});
         };
-        await VideoModel.create({ Name: req.body.Name.toUpperCase(), Thumbnail: req.body.Thumbnail, CreatedAt:new Date() }, function (err, result) {
+        await VideoModel.create({ Name: req.body.Name.toUpperCase(), Thumbnail: req.body.Thumbnail, CreatedAt:new Date() , URL: req.body.URL}, function (err, result) {
             if (err){ 
                 next(err);
             }
