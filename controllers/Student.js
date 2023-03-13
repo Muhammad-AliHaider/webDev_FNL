@@ -152,7 +152,7 @@ module.exports = {
                 const student = await StudentModel.findOne({ID: user._id});
                 const combined = student.CourseEnrolled.concat({id: req.body.ID,progress:0});
                 await StudentModel.findOneAndUpdate({ID: decodedToken.payload.id},{CourseEnrolled: combined}, { useFindAndModify: false })
-                const course = await CourseModel.findOne({CourseID: req.body.ID})
+                const course = await CourseModel.findOne({_id: req.body.ID})
                 str1 = "New Course Added: "
                 str2 = str1.concat(course.Name)
                 notifgen(user,str2)
@@ -199,7 +199,7 @@ module.exports = {
     },
 
     get_video: async function (req,res){
-        await VideoModel.findOne({ID: req.body.VideoID}, { useFindAndModify: false }).then(data => {
+        await VideoModel.findOne({_id: req.body.VideoID}, { useFindAndModify: false }).then(data => {
             if (!data) {
                 res.status(404).send({
                     message: `Video not found.`

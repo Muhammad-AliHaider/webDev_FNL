@@ -36,7 +36,6 @@ const CourseSchema = new Schema({
     Students:[{
         studentId:{
             type: String,
-            required: true
         },  
         enrolledAt:{
             type: Date,

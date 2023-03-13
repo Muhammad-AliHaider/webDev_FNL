@@ -12,13 +12,13 @@ const QuizSchema = new Schema({
     CreatedAt: {
         type: Date,
         trim: true,
-        default: Date.Now(),  
+        default: new Date(),  
         required: true
     },
     UpdatedAt: {
         type: Date,
         trim: true,
-        default: Date.Now(),  
+        default: new Date(),  
         required: true
     }
 
