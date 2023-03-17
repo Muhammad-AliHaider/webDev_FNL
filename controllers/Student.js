@@ -123,7 +123,8 @@ module.exports = {
                 });
                 const user = await UserModel.findOne({_id : decodedToken.payload.id});
                 const student = await StudentModel.findOne({ID: user._id});
-                const combined = student.CourseEnrolled.concat({id: req.body.ID,progress:0});
+                const combined = student.CourseEnrolled.concat({id: req.body.ID,progress:[]});
+                console.log(combined,1)
                 await StudentModel.findOneAndUpdate({ID: decodedToken.payload.id},{CourseEnrolled: combined}, { useFindAndModify: false })
                 const course = await CourseModel.findOne({_id: req.body.ID})
                 var enrol = course.Students
@@ -199,11 +200,12 @@ module.exports = {
                         interim = student.CourseEnrolled.filter(object =>{
                             return object.id == ids;
                         })
-                        var old = interim[0].progress
+                        console.log(interim)
+                        var old = interim[0].progress.concat({quiz: req.body.quiz_id,score: score })
                         inter = student.CourseEnrolled.filter(object =>{
                             return object.id != ids;
                         })
-                        inter.push({id: ids , progress: (score+old)})
+                        inter.push({id: ids , progress: old})
                     }
                 }
                 await StudentModel.findOneAndUpdate({ID: decodedToken.payload.id},{CourseEnrolled: inter}, { useFindAndModify: false })

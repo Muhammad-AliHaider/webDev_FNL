@@ -275,7 +275,7 @@ module.exports = {
                                     }
                                 else{
                                     // console.log(data1)
-                                    const combined = data1[0].CourseEnrolled.concat({id: req.body.CourseID,progress:0});
+                                    const combined = data1[0].CourseEnrolled.concat({id: req.body.CourseID,progress:[]});
                                     await StudentModel.findOneAndUpdate({ID: req.body._id},{CourseEnrolled: combined}, { useFindAndModify: false })
                                 }
                         })

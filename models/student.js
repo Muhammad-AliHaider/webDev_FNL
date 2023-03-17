@@ -16,8 +16,15 @@ const StudentSchema = new Schema({
                 required: true
             },
             progress:{
-                type:Number,
-                required:true,
+                type:[{
+                    quiz:{
+                        type: String,
+                    },
+                    score:{
+                        type: Number,
+                    }
+                }],
+                default:[]
             }
         }],
         trim: true,
