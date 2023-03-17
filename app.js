@@ -1,7 +1,6 @@
 const express = require('express')
 const logger = require('morgan');
-const SignIn = require('./routes/SignIn');
-const SignUp = require('./routes/SignUp');
+const Auth = require('./routes/Auth');
 const Admin = require('./routes/Admin');
 const Student = require('./routes/Student');
 const Teacher = require('./routes/Teacher');
@@ -21,8 +20,7 @@ app.use(bodyParser.urlencoded({ extended: true}))
 app.use(bodyParser.json())
 app.use('/admin',Admin)
 app.use('/student',Student)
-app.use('/signin',SignIn)
-app.use('/signup',SignUp)
+app.use('/auth',Auth)
 app.use('/teacher',Teacher)
 app.use(function(req, res, next) {
     let err = new Error('Not Found');

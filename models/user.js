@@ -1,7 +1,6 @@
 var mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
-
 const saltRounds = 10;
 
 const Schema = mongoose.Schema;
@@ -18,6 +17,10 @@ const UserSchema = new Schema({
         trim: true,  
         required: true,
         minlength: 8
+    },  
+    isVerified: {
+        type: Boolean,
+        default: false
     },
     Name: {
         type: String,
@@ -96,12 +99,11 @@ const UserSchema = new Schema({
     
 });
 
-UserSchema.pre('save', function(next){
-    const hash = bcrypt.hashSync(this.Password, saltRounds);
-    this.Password=hash;
-    next();
-});
-
+// UserSchema.pre('save', function(next){
+//     const hash = bcrypt.hashSync(this.Password, saltRounds);
+//     this.Password=hash;
+//     next();
+// });
 var users = new mongoose.model('User',UserSchema);
 
 module.exports = users;
