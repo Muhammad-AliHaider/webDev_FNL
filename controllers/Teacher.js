@@ -108,11 +108,12 @@ module.exports = {
                         message: `User not found.`
                     });
                 }else{
-                    const course = await CourseModel.findOne({_id: req.body.ID})
+                    const course = await CourseModel.findOne({_id: req.body.CourseID})
                     str1 = "Course Deleted: "
                     str2 = str1.concat(course.Name)
+                    user = await UserModel.findOne({_id: decodedToken.payload.id})
                     notifgen(user,str2)
-                    res.send({ message: "User updated successfully." })
+                    res.send({ message: "Course  Removed successfully." })
                 }
             }).catch(err => {
                 res.status(500).send({

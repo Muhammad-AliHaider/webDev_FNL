@@ -5,6 +5,7 @@ const CourseModel = require('../models/course');
 const StudentModel = require('../models/student');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const StudentController = require('./Student');
 
 
 
@@ -255,64 +256,24 @@ module.exports = {
     },
 
     add_course_student: async function (req,res){
-        {
-            try {
-                if(req.body._id && req.body.CourseID)
-                {
-                    await UserModel.find({_id : req.body._id}).then(async data => {
-                        if (data.length == 0) {
-                            res.status(404).send({
-                                message: `User not found.`
-                                });
-                            }
-                        else{
-                            // console.log(data)
-                            await StudentModel.find({ID: req.body._id}).then(async data1 => {
-                                if (data1 == null) {
-                                    res.status(404).send({
-                                        message: `User not found.`
-                                        });
-                                    }
-                                else{
-                                    // console.log(data1)
-                                    const combined = data1[0].CourseEnrolled.concat({id: req.body.CourseID,progress:[]});
-                                    await StudentModel.findOneAndUpdate({ID: req.body._id},{CourseEnrolled: combined}, { useFindAndModify: false })
-                                }
-                        })
-                        
-                        const course = await CourseModel.findOne({_id: req.body.CourseID})
-                        str1 = "User: "
-                        str2 = str1.concat(data[0].UserName)
-                        str3 = str2.concat(" Enrolled in Course: ")
-                        str4 = str3.concat(course.Name)
-                        // concat(user.UserName)
-                        notifgen(data[0],str4)
-                        res.status(200).json({data:"Course added Successfully" });
-                        }
-                    }).catch(err => {
-                    res.status(500).send({
-                        message: err.message
-                    });
-                    });
-                    // const student = await StudentModel.findOne({ID: user._id});
-                    // const combined = student.CourseEnrolled.concat({id: req.body.Course_ID,progress:0});
-                    // await StudentModel.findOneAndUpdate({ID: user._id},{CourseEnrolled: combined}, { useFindAndModify: false })
-                    // const course = await CourseModel.findOne({_id: req.body.ID})
-                    // str1 = "User: "
-                    // str2 = str1.concat(user.UserName)
-                    // str3 = str2.concat(" Enrolled in Course: ")
-                    // str4 = str3.concat(course.Name)
-                    // // concat(user.UserName)
-                    // notifgen(user,str4)
-                    // res.status(200).json({data:"Course added Successfully" });
-                }
-                else{
-                    res.status(200).json({data:"information not complete" });
-                }
-            } catch(error) {
-                res.status(404).json({message: error.message});
-            }
-        };
+        try {
+            const user = await UserModel.findOne({_id : req.body._id});
+            const student = await StudentModel.findOne({ID: user._id});
+            const combined = student.CourseEnrolled.concat({id: req.body.CourseID,progress:[]});
+            console.log(combined,1)
+            await StudentModel.findOneAndUpdate({ID: req.body._id},{CourseEnrolled: combined}, { useFindAndModify: false })
+            const course = await CourseModel.findOne({_id: req.body.CourseID})
+            var enrol = course.Students
+            enrol.push(req.body._id)
+            await CourseModel.findOneAndUpdate({_id: req.body.CourseID},{Students: enrol}, { useFindAndModify: false })
+            str1 = "New Course Added: "
+            str2 = str1.concat(course.Name)
+            notifgen(user,str2)
+            res.status(200).json({data:"Course Purchased Successfully" });
+        }catch(error) {
+            res.status(404).json({message: error.message});
+        }
+            
     },
     notifget: async function (req,res){
         {

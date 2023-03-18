@@ -14,6 +14,7 @@ module.exports = {
                             message: "Invalid Username!!!",
                             data: null,
                         });
+                        console.log(userInfo[0])
                     } else {
                         await sendVerificationEmail(userInfo[0], req, res, false);
                     }

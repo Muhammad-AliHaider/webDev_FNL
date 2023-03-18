@@ -20,7 +20,17 @@ module.exports = {
     },
     read : async function(req, res, next) {
         if(!req.body._id){
-            res.json({status: "failure", message: "Incomplete Information", data: null});
+            try{
+                const ser = await Quiz_Card.find({});
+                if(ser != null){
+                    res.json({status: "success", message: "Quiz_Card found!!!", data: ser});
+                }
+                else{
+                    res.json({status: "failure", message: "Quiz_Card not found!!!", data: null});
+                }}
+                catch(err){
+                    res.send({ message: err.message })
+                }
         }
         else{
             try{
