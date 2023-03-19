@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "forget-normal-life",
+  "private_key_id": "139ad03cae50b492e6437f06e8f6126c359549e2",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQD8a81QSEIu8gzk\nNNdUgGDPGo5lMiK1WvIWb2TwEJR1yDK+3yYVNaafb0yg84/QnjCtU3zCdL4bBtOJ\nGt6rKq9gQyJ8pH+Ph/KXOJuJPk7yQbU+o9wDkxsf74O4DVC2pEXt+i626tUMqb+B\noRJYyczNmvB24WPjD2tcILeXInai77WWmnay2z5Kc+8z4fBGY+Q/JIMvSLIaW1dM\nWDegns5Z37eYbKasZY2ibRqstA0uyEhNxYpw0L6+M1ts8Cj/5aKWHtARXi0dVUgR\nXkyyJJIn6U/wt91Mza1hkxmxeTx/G9Q9SC3uoB6kS9wn0/KrTotWTWTRRAnRECz4\nbYsyQNv7AgMBAAECggEAe3pUnjAqyAI6EixTJZADS2xnOdOTrPmHMThevRyvMwqy\n4DIS1A9Bqf5tEtLyiA/KKg+MGSe4k0n8krYlNMAVuFY++ZASomjTX+weEb38Kn/A\nJJtNliYQ/8dPvOoukJm9Z5OZ5Hrtq1siRkw/yFU3LWDcvpq1HS6+yvtqM7F1LXBy\nw/KKoaAVN0ruqH/cyqBgV7Bap/gUMcTP98bLuomkGHt40smddYGkN/kHOh6nyTzH\nsjYMNukH/8BL3znG0A7SSsQe5MtKQVakZrduX47BNESZYmdChJlAy0GvekxzPW1E\nmrlIrfnESwAuYmBBn8Acc9V9VlSLmCRVS8ixx4T8AQKBgQD/cjZQhOzE5EHkfFAh\niHU7J6UuZd4yepXEIbVKMSX8u6SrUTNLlIO4HWtkiObruOl9SlSxN4WSWyePjESr\nb8Qgyl3hBEx5LuybiNMINdqWvgvEXc2E3UaUbDxwt/W7LM8PXZTo+HMpJjyofiKA\nRdM9DBmyu2lgV35y3rwohY0F+wKBgQD89+knwE3PzAGu9G3fG5swzxz/a+0vLHTS\nZbKK6xzvZvXD59QTm62pE5sVRndgqCIRy4WfcVMKI8jLgZFrEgfCet4TJSrQ79Cr\nFc4OP+UzqWHCnctQtwuyp6dmvKaGN6o4cd8lL6ZrvYGxDyguEPvLmGLhGJwpbvci\n8ClcF9GiAQKBgFMGlzrCiYZRPk16Tj0n8hqA/0I+X+L+TvFJl3f+0376qkH4iXiW\nU92iykYJ7SxOlK1hXHehOSvhrtEMYUFreU7DF5JMaGK26rZ+2UCA6IQ4TvDLIEJ/\n/TG+oEJuuFLW9JHk88JpBl0ojWyiWqpgh5D+/tdF7LEgnvvNA1EUX0rDAoGAF0tx\nAgMYZ0E/CnBhycDOCrGX1wGGRujOHS3WQiqicH1HtnGbuu6EEGTIzC3AAnuZH5Bh\nTqxt3CotbGgTDwwLAOK1noe2qKTcz1RjtDY4EgjQAs7rERS6FAqSRMisgQGRQD9k\nMBVyOsuprLdbmNphhX8T4+yTPNGGGoaJGHztBgECgYBr+P0X8xybkMh0h1GyTBMA\n3VkaiCPsqMSj2m2d+X6aa1qsw9PKqfdvnlnl/1PxNe1qNDoegtE9DZm2Kub/fJu8\nWJzZ1A6SXaxSjbr64bKPJEsNC1m85KXYVFqljf4D6kPLmO7IbSlB7QRTtn1KyTKG\nSzEEb62XjNH8gHMrEvsdZw==\n-----END PRIVATE KEY-----\n",
+  "client_email": "forgetnormallife@forget-normal-life.iam.gserviceaccount.com",
+  "client_id": "112066290365417767500",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/forgetnormallife%40forget-normal-life.iam.gserviceaccount.com"
+}
