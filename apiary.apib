@@ -1,0 +1,1312 @@
+FORMAT: 1A
+HOST: https://polls.apiblueprint.org/
+
+# USER-COURSE-APIS
+
+API's for FNL
+
+## Register [/signup]
+
+you have to provide the necessary info to register the person on the website / Role will be added form the backend
+, only 2 roles avaible "2" and "3"
+
+### Sign Up [POST]
+
++ Request (application/json)
+
+        {
+            {
+            "Name" : "John Smith",
+            "UserName": "John",
+            "Role" : 3,
+            "cardNumber": 1234,
+            "Password" : "asdasd",
+            "ProfilePic": "www.abc.com",
+            "Age" : 20,
+            "Gender": "Male",
+            "Email": "ABC@gmail.com,
+            "BIO": "hehehehe",
+            "expirationDate": 12/04,
+            "securityCode" : 123
+            
+        }
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /users/2
+
+    + Body
+
+            {
+                "message" : "User_added"
+            }
+            
+            
+## Login [/Login]
+
+### Login [POST]
+
++ Request (application/json)
+
+        {
+            {
+            "Email": "johnsmith@example.com",
+            "Password": "password123",
+            }
+        }
+        
++ Response 201 (application/json)
+    + Headers
+            Token: <Bearer> Token
+    
+    + Body
+            {
+                "message" : "Successful login"
+            }
+
+
+            
+## Forgot_Password [/forgotpass]
+
+### Forgot_Pass [POST]
+
++ Request
+    + Body
+    {
+        {
+            "Email": "johnsmith@example.com",
+        }
+    }
+    
++ Response 201 (application/json)
+    
+    + Body
+            {
+                "message" : "OTP send"
+            }
+            
++ Response 400 (application/json)
+    
+    + Body
+            {
+                "message" : "Email not found"
+            }
+            
++ Response 500 (application/json)
+    
+    + Body
+            {
+                "message" : "Server Error"
+            }
+
+
+
+## User Collection [/user]
+
+### Get_Users [GET]
+
++ Request (application/json)
+   + Header
+        TOKEN: <bearer Token>
+        
+
++ Response 200 (application/json)
+{
+    [
+        {
+            "Name" : "John Smith",
+            "ID": "12345",
+            "Age": 27,
+            "Gender": "Male",
+            "Email": "johnsmith@example.com",
+            "Role": "Student",
+            "Course Offered": [],
+            "Course Enrolled": ["Data Structures and Algorithms", "DAA","BCOM"],
+            "Notifications": ["New assignment posted", "Course update"],
+            "Profile Pic": "https://example.com/profile-pic.jpg",
+            "BI0": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "Password": "password123",
+            "Credit Card Details": {
+                "Cardholder Name": "John Smith",
+                "Card Number": "1234 5678 9012 3456",
+                "Expiration Date": "12/23",
+                "CVV": "123"
+            },
+            "Created At": "2022-01-01T12:00:00Z"
+        },
+        {
+            "Name" : "Jane Doe",
+            "ID": "54321",
+            "Age": 32,
+            "Gender": "Female",
+            "Email": "janedoe@example.com",
+            "Role": "Teacher",
+            "Course Offered": ["Data Science","Deep Learning"],
+            "Course Enrolled": null,
+            "Notifications": ["New student enrolled", "Course update"],
+            "Profile Pic": "https://example.com/profile-pic.jpg",
+            "BI0": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "Password": "password456",
+            "Credit Card Details": null,
+            "Created At": "2022-01-02T12:00:00Z"
+        }
+    ]
+}
+
+
+
+
++ Response 400 (application/json)
+{
+    [
+        {
+            "message" : "User Not Found"
+        }
+    ]
+}
+
+
++ Response 500 (application/json)
+{
+    [
+        {
+            "message" : "Server Issue "
+        }
+    ]
+}
+
+### Get_User [GET]
+
++ Request (application/json)
+    Headers
+        TOKEN: <bearer Token>
+    Query Param:
+        Name : John Smith
+        
+        
++ Response 200 (application/json)
+{
+    [
+        {
+            "Name" : "John Smith",
+            "ID": "12345",
+            "Age": 27,
+            "Gender": "Male",
+            "Email": "johnsmith@example.com",
+            "Role": "Student",
+            "Course Offered": [],
+            "Course Enrolled": ["Data Structures and Algorithms", "DAA","BCOM"],
+            "Notifications": ["New assignment posted", "Course update"],
+            "Profile Pic": "https://example.com/profile-pic.jpg",
+            "BI0": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "Password": "password123",
+            "Credit Card Details": {
+                "Cardholder Name": "John Smith",
+                "Card Number": "1234 5678 9012 3456",
+                "Expiration Date": "12/23",
+                "CVV": "123"
+            },
+            "Created At": "2022-01-01T12:00:00Z"
+        }
+    ]
+}
+
+
++ Response 400 (application/json)
+{
+    [
+        {
+            "message" : "User Not Found"
+        }
+    ]
+}
+
+
++ Response 500 (application/json)
+{
+    [
+        {
+            "message" : "Server Issue "
+        }
+    ]
+}
+
+
+        
+        
+
+### Delete_User [DELETE]
+
+Here the user can delete only himself if their roles are 2 or 3 , if 1 then they can delete any user 
+role id and user ID is passed in the token
+
++ Request (application/json)
+   + Header
+        TOKEN: <bearer Token>
+
+    + Body
+        "Name" : "Jane Doe"
+    
++ Response 201 (application/json)
+{
+    [
+        {
+            "message" : "User Deleted"
+        }
+    ]
+}
+
++ Response 400 (application/json)
+{
+    [
+        {
+            "message" : "User Not Found"
+        }
+    ]
+}
+
+
++ Response 500 (application/json)
+{
+    [
+        {
+            "message" : "Server Issue "
+        }
+    ]
+}
+
+
+
+### Update_User [PUT]
+
++ Request (application/json)
+    + Headers
+        TOKEN: <bearer Token>
+
+    + Body
+        to find:
+        "Name" : "Jane Doe"
+        
+        to update:
+        "Password" : "2324"
+        "BIO" : "sdfafa"
+        "age" : 70
+    
++ Response 201 (application/json)
+{
+    [
+        {
+            "message" : "User Updated"
+        }
+    ]
+}
+
++ Response 400 (application/json)
+{
+    [
+        {
+            "message" : "User Not Found"
+        }
+    ]
+}
+
+
++ Response 500 (application/json)
+{
+    [
+        {
+            "message" : "Server Issue "
+        }
+    ]
+}
+
+
+## Course [/Course]
+
+### Get_Course [GET]
++ Request (application/json)
+    + Headers
+        TOKEN: <bearer Token>
+
+    + Body
+        to find:
+        id : 12
+    
++ Response 201 (application/json)
+{
+  [ 
+    {
+        "Course Id": "12",
+        "Name": "Introduction to Programming",
+        "Description": "This course is an introduction to programming for beginners.",
+        "Video": {
+            "Name": "Introduction to Programming",
+            "Thumbnail": "https://example.com/intro-programming-thumbnail.jpg",
+            "Video Id": "abcd1234",
+            "Quiz":[ {
+                "Quiz_ID" : 2
+                "Questions": [
+                    {
+                        "Question": "What is a variable?",
+                        "Answers": [
+                            "A container for storing data.",
+                            "A type of loop.",
+                            "A function.",
+                            "An operator."
+                        ],
+                        "Correct Answer": "A container for storing data."
+                    },
+                    {
+                        "Question": "What is a loop?",
+                        "Answers": [
+                            "A container for storing data.",
+                            "A type of variable.",
+                            "A function.",
+                            "A way to repeat a block of code."
+                        ],
+                        "Correct Answer": "A way to repeat a block of code."
+                    }
+                ]
+            },
+            ],
+            "Date Posted": "2022-01-01T12:00:00Z"
+        },
+        "Course Material": {
+            [
+                {
+                    "CM_Id" : 3
+                    "Name": "Python documentation",
+                    "URL": "https://docs.python.org/3/"
+                },
+                {
+                    "CM_Id" : 4
+                    "Name": "Codecademy Python course",
+                    "URL": "https://www.codecademy.com/learn/learn-python-3"
+                }
+            ]
+        },
+        "Teacher Id": "456",
+        "Students": [
+            {
+                "Id": "789",
+                "Name": "John Smith",
+                "Email": "johnsmith@example.com",
+                "Enrollment Date": "2022-01-01T12:00:00Z"
+            },
+            {
+                "Id": "987",
+                "Name": "Jane Doe",
+                "Email": "janedoe@example.com",
+                "Enrollment Date": "2022-01-02T12:00:00Z"
+            }
+        ],
+        "Created At": "2022-01-01T12:00:00Z"
+    }
+  ]
+}
+
++ Response 400 (application/json)
+{
+    [
+        {
+            "message" : "No Course Found"
+        }
+    ]
+}
+
+
++ Response 500 (application/json)
+{
+    [
+        {
+            "message" : "Server Issue "
+        }
+    ]
+}
+
+
+### Get_Courses [GET]
++ Request (application/json)
+    + Headers
+        TOKEN: <bearer Token>
+
+    
++ Response 201 (application/json)
+{
+  [ 
+    {
+        "Course Id": "12",
+        "Name": "Introduction to Programming",
+        "Description": "This course is an introduction to programming for beginners.",
+        "Video": {
+            "Name": "Introduction to Programming",
+            "Thumbnail": "https://example.com/intro-programming-thumbnail.jpg",
+            "Video Id": "abcd1234",
+            "Quiz": [
+            {
+                "Quiz_ID" : 2
+                "Questions": [
+                    {
+                        "Question": "What is a variable?",
+                        "Answers": [
+                            "A container for storing data.",
+                            "A type of loop.",
+                            "A function.",
+                            "An operator."
+                        ],
+                        "Correct Answer": "A container for storing data."
+                    },
+                    {
+                        "Question": "What is a loop?",
+                        "Answers": [
+                            "A container for storing data.",
+                            "A type of variable.",
+                            "A function.",
+                            "A way to repeat a block of code."
+                        ],
+                        "Correct Answer": "A way to repeat a block of code."
+                    }
+                ]
+                },
+            ],
+            "Date Posted": "2022-01-01T12:00:00Z"
+        },
+        "Course Material": {
+            [
+                {
+                    "CM_Id" : 3
+                    "Name": "Python documentation",
+                    "URL": "https://docs.python.org/3/"
+                },
+                {
+                    "CM_Id" : 4
+                    "Name": "Codecademy Python course",
+                    "URL": "https://www.codecademy.com/learn/learn-python-3"
+                }
+            ]
+        },
+        "Teacher Id": "456",
+        "Students": [
+            {
+                "Id": "789",
+                "Name": "John Smith",
+                "Email": "johnsmith@example.com",
+                "Enrollment Date": "2022-01-01T12:00:00Z"
+            },
+            {
+                "Id": "987",
+                "Name": "Jane Doe",
+                "Email": "janedoe@example.com",
+                "Enrollment Date": "2022-01-02T12:00:00Z"
+            }
+        ],
+        "Created At": "2022-01-01T12:00:00Z"
+    },
+    {
+    "Course Id": "456",
+    "Name": "Advanced Machine Learning",
+    "Description": "This course covers advanced topics in machine learning.",
+    "Video": {
+        "Name": "Advanced Machine Learning",
+        "Thumbnail": "https://example.com/advanced-ml-thumbnail.jpg",
+        "Video Id": "efgh5678",
+        "Quiz": [
+        {
+            Quiz_ID:"1"
+            "Questions": [
+                {
+                    "Question": "What is regularization?",
+                    "Answers": [
+                        "A technique for reducing overfitting in machine learning models.",
+                        "A type of loss function.",
+                        "A way to preprocess data.",
+                        "A method for increasing the accuracy of predictions."
+                    ],
+                    "Correct Answer": "A technique for reducing overfitting in machine learning models."
+                },
+                {
+                    "Question": "What is gradient descent?",
+                    "Answers": [
+                        "An optimization algorithm used in machine learning.",
+                        "A type of feature engineering.",
+                        "A way to reduce the dimensionality of data.",
+                        "A type of activation function."
+                    ],
+                    "Correct Answer": "An optimization algorithm used in machine learning."
+                }
+                ]
+            },
+        ],
+        "Date Posted": "2022-02-01T12:00:00Z"
+    },
+    "Course Material": {
+        [
+            {
+                "CM_Id" : 1
+                "Name": "Coursera Machine Learning course",
+                "URL": "https://www.coursera.org/learn/machine-learning"
+            },
+            {
+                "CM_Id" : 2
+                "Name": "Kaggle Machine Learning competitions",
+                "URL": "https://www.kaggle.com/competitions?category=machine-learning"
+            }
+        ]
+    },
+    "Teacher Id": "789",
+    "Students": [
+        {
+            "Id": "123",
+            "Name": "Alice Johnson",
+            "Email": "alicejohnson@example.com",
+            "Enrollment Date": "2022-02-01T12:00:00Z"
+        },
+        {
+            "Id": "456",
+            "Name": "Bob Smith",
+            "Email": "bobsmith@example.com",
+            "Enrollment Date": "2022-02-02T12:00:00Z"
+        },
+        {
+            "Id": "789",
+            "Name": "Charlie Brown",
+            "Email": "charliebrown@example.com",
+            "Enrollment Date": "2022-02-03T12:00:00Z"
+        }
+    ],
+    "Created At": "2022-02-01T12:00:00Z"
+    },
+  ]
+}
+
++ Response 400 (application/json)
+{
+    [
+        {
+            "message" : "No Courses Found"
+        }
+    ]
+}
+
+
++ Response 500 (application/json)
+{
+    [
+        {
+            "message" : "Server Issue "
+        }
+    ]
+}
+
+### Post_Course [POST]
+
++ Request (application/json)
+    + Headers
+        TOKEN: <bearer Token>
+        
+    + Body
+        {
+            "Course Id": "456",
+            "Name": "Advanced Machine Learning",
+            "Description": "This course covers advanced topics in machine learning.",
+            "Video": {},
+            "Course Material": {},
+        }
+    
++ Response 201 (application/json)
+    
+    {
+        "message":"Course Added"
+    }
+    
++ Response 400 (application/json)
+    + Body
+    {
+        "message" : "Incomplete Information"
+    }
+
++ Response 500 (application/json)
+    + Body
+    {
+        "message" : "Server Issue"
+    }
+
+### Update_Course [PUT]
+
++ Request (application/json)
+    + Headers
+        TOKEN: <bearer Token>
+        
+    +  Body
+        {
+            to find:
+            "Course Id": "456",
+            
+            to update:
+            "Name": "Machine Learning",
+        }
+
++ Response 201 (application/json)
+    + Body
+    {
+        "message":"Course Updated"
+    }
+    
++ Response 400 (application/json)
+    + Body
+    {
+        "message":"Not Found"
+    }
+    
++ Response 500 (application/json)
+    + Body
+    {
+        "message":"Server Error"
+    }
+
+
+### Delete_Coure [DELETE]
++ Request (application/json)
+    + Headers
+        TOKEN: <bearer Token>
+        
+    +  Body
+        {
+            //to find
+            "Course Id": "456",
+            
+        }
+
++ Response 201 (application/json)
+    {
+        "message":"Course Deleted"
+    }
+    
++ Response 400 (application/json)
+    {
+        "message":"Course Not Found"
+    }
+    
++ Response 500 (application/json)
+    {
+        "message":"Server Error"
+    }
+
+    
+    
+
+## Videos [/Videos]
+
+### ADD_Video [POST]
+
++ Request (application/json)
+ + Headers
+        TOKEN: <bearer Token>
+        
+   +  Body
+        {
+            "Name": "Advanced Machine Learning",
+            "Thumbnail": "https://example.com/advanced-ml-thumbnail.jpg",
+            "Video Id": "efgh5678",
+            Quiz: {}
+        }
+
++ Response 201 (application/json)
+    + Body
+    {
+        "message":"Video Added"
+    }
+    
++ Response 400 (application/json)
+    + Body
+    {
+        "message":"Incomplete Information"
+    }
+    
++ Response 500 (application/json)
+    + Body
+    {
+        "message":"Server Error"
+    }
+
+### Get_Video [GET] 
+
++ Request
+    + Headers
+        TOKEN : <Bearer Token>
+    
+    + Body
+        "Video Id" : "efgh5678",
+
+
++ Response 
+    + Body
+        {
+            "Name": "Advanced Machine Learning",
+            "Thumbnail": "https://example.com/advanced-ml-thumbnail.jpg",
+            "Video Id": "efgh5678",
+            "Quiz": [
+            {
+                Quiz_ID:"1"
+                "Questions": [
+                    {
+                        "Question": "What is regularization?",
+                        "Answers": [
+                            "A technique for reducing overfitting in machine learning models.",
+                            "A type of loss function.",
+                            "A way to preprocess data.",
+                            "A method for increasing the accuracy of predictions."
+                        ],
+                        "Correct Answer": "A technique for reducing overfitting in machine learning models."
+                    },
+                    {
+                        "Question": "What is gradient descent?",
+                        "Answers": [
+                            "An optimization algorithm used in machine learning.",
+                            "A type of feature engineering.",
+                            "A way to reduce the dimensionality of data.",
+                            "A type of activation function."
+                        ],
+                        "Correct Answer": "An optimization algorithm used in machine learning."
+                    }
+                    ]
+                },
+            ],
+            "Date Posted": "2022-02-01T12:00:00Z"
+        }
+        
++ Response 400 (application/json)
+    {
+        "message":"Video Not Found"
+    }
+    
++ Response 500 (application/json)
+    {
+        "message":"Server Error"
+    }
+    
+
+### Update_Video [PUT]
+
++ Request (application/json)
+    + Headers
+        TOKEN: <bearer Token>
+        
+    +  Body
+        {
+            //to find
+            "Video Id": "efgh5678",
+            
+            //to update
+            Quiz: {
+                Quiz_ID: 2
+            }
+        }
+
++ Response 201 (application/json)
+    {
+        "message":"Video Updated"
+    }
+    
++ Response 400 (application/json)
+    {
+        "message":"Video Not Found"
+    }
+    
++ Response 500 (application/json)
+    {
+        "message":"Server Error"
+    }
+    
+    
+### Delete_Video [DELETE]
+
++ Request (application/json)
+    + Headers
+        TOKEN: <bearer Token>
+        
+    +  Body
+        {
+            //to find
+            "Video Id": "efgh5678",
+            
+        }
+
++ Response 201 (application/json)
+    {
+        "message":"Video Deleted"
+    }
+    
++ Response 400 (application/json)
+    {
+        "message":"Video Not Found"
+    }
+    
++ Response 500 (application/json)
+    {
+        "message":"Server Error"
+    }
+   
+   
+
+
+## Quiz [/Quizes]
+
+Quiz ID will be generated automatically by the backend
+
+### ADD_Quiz [POST]
+
++ Request (application/json)
+    + Headers
+        TOKEN: <bearer Token>
+        
+    +  Body
+        {
+            "Questions" : [
+                    {
+                        "Question": "What is regularization?",
+                        "Answers": [
+                            "A technique for reducing overfitting in machine learning models.",
+                            "A type of loss function.",
+                            "A way to preprocess data.",
+                            "A method for increasing the accuracy of predictions."
+                        ],
+                        "Correct Answer": "A technique for reducing overfitting in machine learning models."
+                    },
+                    {
+                       "Question": "What is gradient descent?",
+                        "Answers": [
+                        "An optimization algorithm used in machine learning.",
+                        "A type of feature engineering.",
+                        "A way to reduce the dimensionality of data.",
+                        "A type of activation function."
+                        ],
+                        "Correct Answer": "An optimization algorithm used in machine learning." 
+                    }
+            ]
+        }
+
++ Response 201 (application/json)
+    {
+        "message":"Quiz Added"
+    }
+    
++ Response 400 (application/json)
+    {
+        "message":"Incomplete Information"
+    }
+    
++ Response 500 (application/json)
+    {
+        "message":"Server Error"
+    }
+
+
+
+### Get_Quiz [GET]
+
++ Request
+    + Headers
+        TOKEN: <bearer Token>
+        
+    +  Body
+        {
+            "Quiz_ID" : 1
+        }
+
+
++ Response
+    + Body
+    {
+     Quiz_ID:"1"
+    "Questions": [
+        {
+            "Question": "What is regularization?",
+            "Answers": [
+                "A technique for reducing overfitting in machine learning models.",
+                "A type of loss function.",
+                "A way to preprocess data.",
+                "A method for increasing the accuracy of predictions."
+            ],
+            "Correct Answer": "A technique for reducing overfitting in machine learning models."
+        },
+        {
+            "Question": "What is gradient descent?",
+            "Answers": [
+                "An optimization algorithm used in machine learning.",
+                "A type of feature engineering.",
+                "A way to reduce the dimensionality of data.",
+                "A type of activation function."
+            ],
+            "Correct Answer": "An optimization algorithm used in machine learning."
+        }
+        ]
+    }
+
+
+### Update_Quiz [PUT]
+ 
+first all the questions will be show on the screen of the user using get API , then as
+user changes the data and submits it ,  the quiz will be updated
+
+
++ Request (application/json)
+    + Headers
+        TOKEN: <bearer Token>
+        
+    +  Body
+        {
+            //to Find
+            "Quiz_ID" : 1         
+            
+            //to update
+            "Questions" : [
+                    {
+                        "Question": "What is regularization?",
+                        "Answers": [
+                            "A technique for reducing overfitting in machine learning models.",
+                            "A type of loss function.",
+                            "A way to preprocess data.",
+                            "A method for increasing the accuracy of predictions."
+                        ],
+                        "Correct Answer": "A technique for reducing overfitting in machine learning models."
+                    },
+                    {
+                       "Question": "What is a loop?",
+                        "Answers": [
+                            "A container for storing data.",
+                            "A type of variable.",
+                            "A function.",
+                            "A way to repeat a block of code."
+                        ],
+                        "Correct Answer": "A way to repeat a block of code."
+                    }
+            ]
+        }
+
++ Response 201 (application/json)
+    {
+        "message":"Quiz Updated"
+    }
+    
++ Response 400 (application/json)
+    {
+        "message":"Not Found"
+    }
+    
++ Response 500 (application/json)
+    {
+        "message":"Server Error"
+    }
+
+
+### Delete_Quiz [DELETE]
+    
++ Request
+    + Headers
+        TOKEN: <bearer Token>
+        
+    +  Body
+        {
+            "Quiz_ID" : 1
+        }
+
++ Response 201 (application/json)
+    {
+        "message":"Quiz Deleted"
+    }
+    
++ Response 400 (application/json)
+    {
+        "message":"Not Found"
+    }
+    
++ Response 500 (application/json)
+    {
+        "message":"Server Error"
+    }
+
+
+
+## Course_Material [/CourseMaterial]
+
+Course_Material ID will be generated automatically by the backend
+
+### ADD_Course_Material [POST]
+
++ Request (application/json)
+    + Headers
+        TOKEN: <bearer Token>
+        
+    +  Body
+        {
+            "Name": "Coursera Machine Learning course",
+            "URL": "https://www.coursera.org/learn/machine-learning"
+        }
+
++ Response 201 (application/json)
+    {
+        "message":"CM Added"
+    }
+    
++ Response 400 (application/json)
+    {
+        "message":"Incomplete Information"
+    }
+    
++ Response 500 (application/json)
+    {
+        "message":"Server Error"
+    }
+
+
+
+### Get_Course_Material [GET]
+
++ Request
+    + Headers
+        TOKEN: <bearer Token>
+        
+    +  Body
+        {
+            "CM_Id" : 1
+        }
+
+
++ Response
+    + Body
+        {
+            "CM_Id" : 1
+            "Name": "Coursera Machine Learning course",
+            "URL": "https://www.coursera.org/learn/machine-learning"
+        }
+
+
+### Update_Course_Material [PUT]
+
++ Request (application/json)
+    + Headers
+        TOKEN: <bearer Token>
+        
+    +  Body
+        {
+            //to Find
+            "CM_Id" : 1         
+            
+            //to update
+            "Name": "Udemy Machine Learning course",
+            "URL": "https://www.Udemy.org/learn/machine-learning"
+        }
+
++ Response 201 (application/json)
+    {
+        "message":"CM Updated"
+    }
+    
++ Response 400 (application/json)
+    {
+        "message":"Not Found"
+    }
+    
++ Response 500 (application/json)
+    {
+        "message":"Server Error"
+    }
+
+
+### Delete_Course_Material [DELETE]
+    
++ Request
+    + Headers
+        TOKEN: <bearer Token>
+        
+    +  Body
+        {
+            "CM_Id" : 1
+        }
+
++ Response 201 (application/json)
+    {
+        "message":"CM Deleted"
+    }
+    
++ Response 400 (application/json)
+    {
+        "message":"Not Found"
+    }
+    
++ Response 500 (application/json)
+    {
+        "message":"Server Error"
+    }
+
+
+
+## Cart [/Cart]
+
+### ADD_to_Cart [POST]
+
++ Request (application/json)
+    + Headers
+        TOKEN: <bearer Token>
+        
+    +  Body
+        {
+            "Course Id" : 12
+        }
+
++ Response 201 (application/json)
+    {
+        "message":"Added to cart"
+    }
+    
++ Response 400 (application/json)
+    {
+        "message":"Incomplete Information"
+    }
+    
++ Response 500 (application/json)
+    {
+        "message":"Server Error"
+    }
+
+
+
+### Get_Course_Material [GET]
+
++ Request
+    + Headers
+        TOKEN: <bearer Token>
+        
+    +  Body
+        {
+        }
+
+
++ Response
+    + Body
+        { 
+            [ 
+                {
+                    "Course Id" : 12
+                    "Name" : "Intro to Programming"
+                },
+            ]
+        }
+
+
+### Delete_Course_Material [DELETE]
+    
++ Request
+    + Headers
+        TOKEN: <bearer Token>
+        
+    +  Body
+        {
+            "Course Id" : 12
+        }
+
++ Response 201 (application/json)
+    {
+        "message":"Removed for cart"
+    }
+    
++ Response 400 (application/json)
+    {
+        "message":"Not Found"
+    }
+    
++ Response 500 (application/json)
+    {
+        "message":"Server Error"
+    }
+
+
+
+
+
+## Notification [/Notification]
+
+### Generate_Notification [POST]
+
++ Request (application/json)
+    + Headers
+        TOKEN: <bearer Token>
+        
+    +  Body
+        {
+            
+        }
+
++ Response 201 (application/json)
+    {
+        "message":"notification generated"
+    }
+    
++ Response 400 (application/json)
+    {
+        "message":"Incomplete Information"
+    }
+    
++ Response 500 (application/json)
+    {
+        "message":"Server Error"
+    }
+
+
+
+### Get_Notification [GET]
+
++ Request
+    + Headers
+        TOKEN: <bearer Token>
+        
+   +  Body
+        {
+        }
+
+
++ Response
+    + Body
+        { 
+            [ 
+                {
+                    "Notification_ID" : 1
+                    "message" : "You bought course with id 2"
+                },
+                
+                {
+                    "Notification_ID" : 2
+                    "message" : "try the new quiz"
+                },
+            ]
+        }
+
+
+### Delete__Notification [DELETE]
+    
++ Request
+    + Headers
+        TOKEN: <bearer Token>
+        
+   +  Body
+        {
+            "Notification_ID" : 2
+        }
+
++ Response 201 (application/json)
+    {
+        "message":"Notification Deleted"
+    }
+    
++ Response 400 (application/json)
+    {
+        "message":"Not Found"
+    }
+    
++ Response 500 (application/json)
+    {
+        "message":"Server Error"
+    }
