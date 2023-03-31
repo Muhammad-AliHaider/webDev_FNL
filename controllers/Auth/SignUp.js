@@ -9,6 +9,8 @@ const {sendVerificationEmail} = require('../../middlewares/email');
 
 module.exports = {
     create: async function(req, res, next) {
+        console.log('hi')
+        console.log(req.body)
         if (!(req.body.UserName||req.body.Password||req.body.Name||req.body.Age||req.body.Email||req.body.Role||req.body.CreditCard)){
             res.json({status: "failure", message: "Incomplete Information", data: null});
             // next();
@@ -23,6 +25,7 @@ module.exports = {
                 await UserModel.create({ UserName: req.body.UserName, Password: req.body.Password, Name: req.body.Name,Age: req.body.Age,Gender: req.body.Gender,Email: req.body.Email,Role: req.body.Role, Notification:[],ProfilePic : req.body.ProfilePic,BIO: req.body.BIO, CreditCard: {cardNumber: req.body.cardNumber,expirationDate: req.body.expirationDate, securityCode:req.body.securityCode}, CreatedAt: new Date()}, async function (err, result) {
                     
                     if (err){ 
+                        console.log(err.message)
                         res.send({status :"failure",message : err.message});
                     }
                     else{

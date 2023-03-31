@@ -1,4 +1,5 @@
-const express = require('express')
+const express = require('express');
+const cors = require('cors');
 const logger = require('morgan');
 const Auth = require('./routes/Auth');
 const Admin = require('./routes/Admin');
@@ -13,6 +14,7 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 app.use(express.static('public'));
+app.use(cors());
 
 app.use(cookieparser());
 app.use(logger('dev'));

@@ -28,7 +28,7 @@ const UserSchema = new Schema({
         required: true
     },
     Age: {
-        type: Number,
+        type: String,
         trim: true,  
         required: true
     },
@@ -91,7 +91,7 @@ const UserSchema = new Schema({
         required: true
     },
     Role: {
-        type: Number,
+        type: String,
         enum:[1,2,3],
         trim: true,  
         required: true
