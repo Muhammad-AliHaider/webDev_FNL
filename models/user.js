@@ -72,17 +72,20 @@ const UserSchema = new Schema({
     CreditCard: {
         cardNumber:{
             type: String,
-            required: true,
+            required: false,
+            default: " "
         },
         expirationDate:{
             type: String,
-            required: true,
-            match:/^(0[1-9]|1[0-2])\/[0-9]{2}$/
+            required: false,
+            //match:/^(0[1-9]|1[0-2])\/[0-9]{2}$/,
+            default: " "
         },
         securityCode:{
             type:String,
-            required:true,
-            match:/^[0-9]{3,4}$/
+            required:false,
+            //match:/^[0-9]{3,4}$/,
+            default: " "
         }
     },
     CreatedAt: {

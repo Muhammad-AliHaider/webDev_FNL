@@ -22,7 +22,7 @@ module.exports = {
                      });
                     res.cookie('acc', token, { httpOnly: true, 
                      });
-                    
+                     console.log(token)
                      res.status(200).json({status:"success", message: "user found!!!", data:{user: userInfo[0], token:token}});
                 }else{
                     console.log('glt')

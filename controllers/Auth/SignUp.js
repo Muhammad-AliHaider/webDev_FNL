@@ -11,7 +11,7 @@ module.exports = {
     create: async function(req, res, next) {
         console.log('hi')
         console.log(req.body)
-        if (!(req.body.UserName||req.body.Password||req.body.Name||req.body.Age||req.body.Email||req.body.Role||req.body.CreditCard)){
+        if (!(req.body.UserName||req.body.Password||req.body.Name||req.body.Age||req.body.Email||req.body.Role)){
             res.json({status: "failure", message: "Incomplete Information", data: null});
             // next();
         }
