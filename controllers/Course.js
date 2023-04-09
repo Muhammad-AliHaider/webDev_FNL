@@ -19,24 +19,24 @@ module.exports = {
     },
 
     read: async function(req, res, next) {
-        if(req.body._id){
+        if(req.query._id){
             try{
-                const ser = await CourseModel.find({_id : req.body._id}).populate('VideoID').populate('MaterialID');
+                const ser = await CourseModel.find({_id : req.query._id}).populate('VideoID').populate('MaterialID');
                 if(ser.length != 0){
-                    res.json({status: "success", message: "Course found!!!", data: ser});
+                    res.status(200).json({status: "success", message: "Course found!!!", data: ser});
                 }
                 else{
-                    res.json({status: "failure", message: "Course not found!!!", data: null});
+                    res.status(401).json({status: "failure", message: "Course not found!!!", data: null});
                 }
             }
             catch(err){
                 res.json({status: "failure", message: "Course not found!!!", data: null});
             }
         }
-        else if(req.body.Name){
+        else if(req.query.Name){
             try {
                 const courses = await CourseModel.find();
-                if(req.body.Name){
+                if(req.query.Name){
                     const inter = courses.filter(object =>{
                         return object.Name.includes((req.body.Name).toUpperCase());
                     })
@@ -53,13 +53,13 @@ module.exports = {
             try{
             const ser = await CourseModel.find({});
             if(ser.length != 0){
-                res.json({status: "success", message: "Course found!!!", data: ser});
+                res.status(200).json({status: "success", message: "Course found!!!", data: ser});
             }
             else{
-                res.json({status: "failure", message: "Course not found!!!", data: null});
+                res.status(404).json({status: "failure", message: "Course not found!!!", data: null});
             }}
             catch(err){
-                res.json({status: "failure", message: "Course not found!!!", data: null});
+                res.status(404).json({status: "failure", message: "Course not found!!!", data: null});
             }
         }
 
