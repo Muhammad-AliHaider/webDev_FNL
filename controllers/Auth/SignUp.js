@@ -19,6 +19,7 @@ module.exports = {
             res.json({status: "failure", message: "Incorrect Role", data: null});
             // next();
         }
+        else{
         await UserModel.find({UserName:req.body.Email}). then ( async userInfo => {
             if(userInfo.length == 0){         
 
@@ -44,7 +45,8 @@ module.exports = {
             }
         }).catch(err => {
             res.json({status:"error", message: err, data:null});
-        }); 
+        });
+        } 
 
     },
     verify : async (req, res) => {
