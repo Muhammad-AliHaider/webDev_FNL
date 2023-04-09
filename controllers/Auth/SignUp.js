@@ -11,7 +11,7 @@ module.exports = {
     create: async function(req, res, next) {
         console.log('hi')
         console.log(req.body)
-        if (!(req.body.UserName||req.body.Password||req.body.Name||req.body.Age||req.body.Email||req.body.Role||req.body.CreditCard)){
+        if (!(req.body.UserName||req.body.Password||req.body.Name||req.body.Age||req.body.Email||req.body.Role)){
             res.json({status: "failure", message: "Incomplete Information", data: null});
             // next();
         }
@@ -19,6 +19,7 @@ module.exports = {
             res.json({status: "failure", message: "Incorrect Role", data: null});
             // next();
         }
+        else{
         await UserModel.find({UserName:req.body.Email}). then ( async userInfo => {
             if(userInfo.length == 0){         
 
@@ -44,7 +45,8 @@ module.exports = {
             }
         }).catch(err => {
             res.json({status:"error", message: err, data:null});
-        }); 
+        });
+        } 
 
     },
     verify : async (req, res) => {
