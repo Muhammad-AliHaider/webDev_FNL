@@ -16,7 +16,7 @@ module.exports = {
                 console.log(req.body.Password, userInfo[0].Password)
                 if(req.body.Password == userInfo[0].Password) {
                     if (!userInfo[0].isVerified) return res.status(401).json({ type: 'not-verified', message: 'Your account has not been verified.' });
-                    const token = jwt.sign({id: userInfo[0]._id,role: userInfo[0].Role}, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '300s' },{data: new Date().getTime()/1000});
+                    const token = jwt.sign({id: userInfo[0]._id,role: userInfo[0].Role}, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1d' },{data: new Date().getTime()/1000});
                     const rtoken = jwt.sign({id: userInfo[0]._id,role: userInfo[0].Role}, process.env.REFRESH_TOKEN_SECRET , { expiresIn: '7d' },{data: new Date().getTime()}/1000);
                     res.cookie('jwt', rtoken, { httpOnly: true, 
                      });
