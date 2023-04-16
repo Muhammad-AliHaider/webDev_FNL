@@ -13,7 +13,6 @@ module.exports = {
         {
             try {
                 const authHeader = req.headers['authorization'];
-                console.log('authorization')
                 // Extract token from header
                 const token = authHeader && authHeader.split(' ')[1];
                 const decodedToken = jwt.decode(token, {
