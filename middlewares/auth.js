@@ -5,13 +5,9 @@ module.exports = {
 verifyToken: function(req, res,next) {
     
     const authHeader = req.headers['authorization'];
-    
-    
     // Extract token from header
-    const token = authHeader ;
+    const token = authHeader && authHeader.split(' ')[1];
     if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
-
-    console.log("all passed");
     
     
     
@@ -71,9 +67,8 @@ verifyAdmin: function (req, res,next){
 verifyStudent: function(req, res,next) {
     
     const authHeader = req.headers['authorization'];
-    console.log(authHeader);
     // Extract token from header
-    const token = authHeader ;
+    const token = authHeader && authHeader.split(' ')[1];
     console.log(token)
     if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
     const decodedToken = jwt.decode(token, {
@@ -82,7 +77,6 @@ verifyStudent: function(req, res,next) {
     if (decodedToken.payload.role != 3){
         return res.status(406).json({ message: 'Unauthorized: Only Students Allowed' });
     }
-    
     next();
 },
 
