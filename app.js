@@ -9,14 +9,12 @@ const bodyParser = require('body-parser')
 const app = express();
 const dbConfig = require('./config/database.config');
 const mongoose = require('mongoose');
-const cookieparser = require('cookie-parser');
 const dotenv = require('dotenv');
 
 dotenv.config();
 app.use(express.static('public'));
 app.use(cors());
 
-app.use(cookieparser());
 app.use(logger('dev'));
 app.use(bodyParser.urlencoded({ extended: true}))
 app.use(bodyParser.json())

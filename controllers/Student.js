@@ -21,6 +21,7 @@ module.exports = {
                 const user = await UserModel.findOne({_id : decodedToken.payload.id});
                 console.log(user)
                 const std = await StudentModel.findOne({ID : decodedToken.payload.id});
+                console.log('Access1',res.getHeader('Access'))
                 res.status(200).json({data: user,std});
             } catch(error) {
                 res.status(404).json({message: error.message});
