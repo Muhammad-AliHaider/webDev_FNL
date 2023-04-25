@@ -14,6 +14,11 @@ const CourseSchema = new Schema({
         trim: true,  
         required: true
     },
+    Price: {
+        type: String,
+        trim: true,  
+        required: false //until further notice
+    },
     Description: {
         type: String,
         trim: true,  
