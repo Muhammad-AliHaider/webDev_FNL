@@ -21,6 +21,11 @@ const tokenSchema = new mongoose.Schema({
         required: true,
         default: Date.now,
         expires: 43200
+    },
+    status :{
+        type: Boolean,
+        default: true,
+        required: true,
     }
 
 }, {timestamps: true});

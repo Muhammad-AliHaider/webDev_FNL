@@ -53,6 +53,11 @@ const CourseSchema = new Schema({
         required: true,
         default: Date.now()
     },
+    status :{
+        type: Boolean,
+        default: true,
+        required: true,
+    }
 });
 
 CourseSchema.pre('save', function(next){

@@ -72,9 +72,11 @@ verifyAdmin: function (req, res,next){
 verifyStudent: function(req, res,next) {
     
     const authHeader = req.headers['authorization'];
+
+    console.log(authHeader);
     // Extract token from header
     const token = authHeader && authHeader.split(' ')[1];
-    console.log(token)
+    //console.log(token);
     if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
     const decodedToken = jwt.decode(token, {
         complete: true
@@ -90,6 +92,7 @@ verifyTeacher: function(req, res,next)  {
     const authHeader = req.headers['authorization'];
         // Extract token from header
         const token = authHeader && authHeader.split(' ')[1];
+        console.log(token);
     if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
     const decodedToken = jwt.decode(token, {
         complete: true

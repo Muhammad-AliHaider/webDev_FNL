@@ -18,8 +18,9 @@ module.exports = {
                 });
                 const user = await UserModel.findOne({_id : decodedToken.payload.id});
                 const teacher = await TeacherModel.findOne({ID : decodedToken.payload.id}).populate('CourseOffered');
-                if(user!= null && teacher!= null)
-                res.status(200).json({data: user,teacher});
+                if(user!= null && teacher!= null){
+                console.log(res.getHeaders("access"));
+                res.status(200).json({Header: res.getHeaders("access"),data: user,teacher});}
                 else
                 res.status(404).json({message: "User not found."});
             } catch(error) {

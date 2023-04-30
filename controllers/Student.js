@@ -88,15 +88,19 @@ module.exports = {
 
     notifget: async function (req,res){
         {
+            console.log("notifget");
             try {
                 const authHeader = req.headers['authorization'];
         // Extract token from header
-        const token = authHeader && authHeader.split(' ')[1];
+                const token = authHeader && authHeader.split(' ')[1];
                 const decodedToken = jwt.decode(token, {
                     complete: true
                 });
                 const user = await UserModel.findOne({_id : decodedToken.payload.id});
-                res.status(200).json({data: user.Notification});
+                
+                res.status(200).json({Headers : res.getHeader("access") ,data: user.Notification});
+                // console.log("here _____________________")
+                // console.log(res.getHeader("access"));
             } catch(error) {
                 res.status(404).json({message: error.message});
             }

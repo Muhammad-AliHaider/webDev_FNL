@@ -25,6 +25,11 @@ const QuizSchema = new Schema({
         trim: true,
         default: new Date(),  
         required: true
+    },
+    status :{
+        type: Boolean,
+        default: true,
+        required: true,
     }
 
 });

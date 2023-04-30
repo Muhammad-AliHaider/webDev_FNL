@@ -5,7 +5,7 @@ module.exports = {
         if (!(req.body.Name && req.body.Thumbnail && req.body.URL)){
             res.json({status: "failure", message: "Incomplete Information", data: null});
         };
-        await VideoModel.create({ Name: req.body.Name.toUpperCase(), Thumbnail: req.body.Thumbnail , URL : req.body.URL, CreatedAt:new Date() }, function (err, result) {
+        await VideoModel.create({ Name: req.body.Name.toUpperCase(), Thumbnail: req.body.Thumbnail , URL : req.body.URL, CreatedAt:new Date() , status : true }, function (err, result) {
             if (err){ 
                 next(err);
             }
@@ -18,7 +18,7 @@ module.exports = {
     read: async function(req, res, next) {
         if(req.body._id){
             try{
-            const ser = await VideoModel.find({_id : req.body._id}).populate('QuizID');
+            const ser = await VideoModel.find({_id : req.body._id, status : true}).populate('QuizID');
             if(ser.length != 0){
                 res.json({status: "success", message: "Video found!!!", data: ser});
             }
@@ -31,7 +31,7 @@ module.exports = {
         }
         else if(req.body.Name){
             try {
-                const videos = await VideoModel.find();
+                const videos = await VideoModel.find({status : true}).populate('QuizID');
                 if(req.body.Name){
                     const inter = videos.filter(object =>{
                         return object.Name.includes((req.body.Name).toUpperCase());
@@ -47,7 +47,7 @@ module.exports = {
         }
         else{
             try{
-                const ser =await VideoModel.find({});
+                const ser =await VideoModel.find({status : true}).populate('QuizID');
                 if(ser.length != 0){
                     res.json({status: "success", message: "Video found!!!", data: ser});
                 }
@@ -64,7 +64,7 @@ module.exports = {
 
     update:  async function (req,res){
         if((req.body._id)){
-        await VideoModel.findOneAndUpdate({_id : req.body._id}, req.body, { useFindAndModify: false }).then(data => {
+        await VideoModel.findOneAndUpdate({_id : req.body._id , status : true}, req.body, { useFindAndModify: false }).then(data => {
             if (data.length == 0) {
                 res.status(404).send({
                     message: `Video not found.`
@@ -88,7 +88,7 @@ module.exports = {
             res.json({status: "failure", message: "Incomplete Information", data: null});
         }
         else{
-        await  VideoModel.findOneAndRemove({_id: req.body._id}).then(data => {
+        await  VideoModel.findOneAndUpdate({_id: req.body._id} , {status : false} , { useFindAndModify: false }).then(data => {
             if (data.length == 0) {
                 res.status(404).send({
                     message: `Video not found.`
@@ -109,7 +109,7 @@ module.exports = {
             res.json({status: "failure", message: "Incomplete Information", data: null});
         }
         else{
-        await VideoModel.findOneAndUpdate({_id : req.body._id}, {$push: {QuizID: req.body.QuizID}}, { useFindAndModify: false }).then(data => {
+        await VideoModel.findOneAndUpdate({_id : req.body._id  ,status : true}, {$push: {QuizID: req.body.QuizID}}, { useFindAndModify: false }).then(data => {
             if (data.length == 0) {
                 res.status(404).send({
                     message: 'Video not found.'

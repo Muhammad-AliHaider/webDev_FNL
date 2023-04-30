@@ -12,6 +12,11 @@ const CardSchema = new Schema({
         type: Date,
         trim: true,  
         required: true
+    },
+    status :{
+        type: Boolean,
+        default: true,
+        required: true,
     }
 
 });

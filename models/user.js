@@ -99,6 +99,11 @@ const UserSchema = new Schema({
         trim: true,  
         required: true
     },
+    status :{
+        type: Boolean,
+        default: true,
+        required: true,
+    }
     
 });
 

@@ -6,7 +6,7 @@ module.exports = {
         if (!(req.body.Name||req.body.Description||req.body.Thumbnail)){
             res.json({status: "failure", message: "Incomplete Information", data: null});
         }
-        await CourseModel.create({ Name: req.body.Name.toUpperCase(), Description: req.body.Description, Thumbnail: req.body.Thumbnail, CreatedAt:new Date()}, function (err, result) {
+        await CourseModel.create({ Name: req.body.Name.toUpperCase(), Description: req.body.Description, Thumbnail: req.body.Thumbnail, CreatedAt:new Date(), status :true}, function (err, result) {
             if (err){ 
                 console.log(err);
                 res.json({status: "failure", message: "Course not added!!!", data: null});
@@ -19,9 +19,9 @@ module.exports = {
     },
 
     read: async function(req, res, next) {
-        if(req.body._id){
+        if(req.query._id){
             try{
-                const ser = await CourseModel.find({_id : req.body._id}).populate('VideoID').populate('MaterialID');
+                const ser = await CourseModel.find({_id : req.query._id , status :true}).populate('VideoID').populate('MaterialID');
                 if(ser.length != 0){
                     res.json({status: "success", message: "Course found!!!", data: ser});
                 }
@@ -35,7 +35,7 @@ module.exports = {
         }
         else if(req.body.Name){
             try {
-                const courses = await CourseModel.find();
+                const courses = await CourseModel.find({status :true});
                 if(req.body.Name){
                     const inter = courses.filter(object =>{
                         return object.Name.includes((req.body.Name).toUpperCase());
@@ -51,7 +51,7 @@ module.exports = {
         }
         else{
             try{
-            const ser = await CourseModel.find({});
+            const ser = await CourseModel.find({ status :true});
             if(ser.length != 0){
                 res.json({status: "success", message: "Course found!!!", data: ser});
             }
@@ -67,7 +67,7 @@ module.exports = {
 
     update:  async function (req,res){
         if(req.body._id){
-            await CourseModel.findOneAndUpdate({_id : req.body._id}, req.body, { useFindAndModify: false }).then(data => {
+            await CourseModel.findOneAndUpdate({_id : req.body._id , status :true}, req.body, { useFindAndModify: false }).then(data => {
                 if (data.length == 0) {
                     res.status(404).send({
                         message: `Course not found.`
@@ -88,7 +88,7 @@ module.exports = {
 
     destroy: async function (req,res){
         if(req.body._id){
-            await  CourseModel.findOneAndRemove({_id: req.body._id}).then(data => {
+            await  CourseModel.findOneAndUpdate({_id: req.body._id },{ status : false }, { useFindAndModify: false }).then(data => {
                 if (data.length == 0) {
                     res.status(404).send({
                         message: `Course not found.`
@@ -155,7 +155,7 @@ module.exports = {
     add_material: async function (req,res){
         if(req.body._id){
             
-            await CourseModel.findOneAndUpdate({_id : req.body._id},{ $push: { MaterialID: req.body.MaterialID } }, { useFindAndModify: false }).then(data => {
+            await CourseModel.findOneAndUpdate({_id : req.body._id , status:true},{ $push: { MaterialID: req.body.MaterialID } }, { useFindAndModify: false }).then(data => {
                 if (data.length == 0) {
                     res.status(404).send({
                         message: `Course not found.`
