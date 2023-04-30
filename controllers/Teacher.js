@@ -10,14 +10,17 @@ module.exports = {
     read: async function (req,res){
         {
             try {
-                var token = req.cookies.acc;
+                const authHeader = req.headers['authorization'];
+        // Extract token from header
+        const token = authHeader && authHeader.split(' ')[1];
                 const decodedToken = jwt.decode(token, {
                     complete: true
                 });
                 const user = await UserModel.findOne({_id : decodedToken.payload.id});
                 const teacher = await TeacherModel.findOne({ID : decodedToken.payload.id}).populate('CourseOffered');
-                if(user!= null && teacher!= null)
-                res.status(200).json({data: user,teacher});
+                if(user!= null && teacher!= null){
+                console.log(res.getHeaders("access"));
+                res.status(200).json({Header: res.getHeaders("access"),data: user,teacher});}
                 else
                 res.status(404).json({message: "User not found."});
             } catch(error) {
@@ -27,7 +30,9 @@ module.exports = {
     },
 
     update : async function (req,res){
-        var token = req.cookies.acc;
+        const authHeader = req.headers['authorization'];
+        // Extract token from header
+        const token = authHeader && authHeader.split(' ')[1];
         const decodedToken = jwt.decode(token, {
             complete: true
         });
@@ -53,7 +58,9 @@ module.exports = {
 
     destroy: async function (req,res){
         try {
-    var token = req.cookies.acc;
+    const authHeader = req.headers['authorization'];
+        // Extract token from header
+        const token = authHeader && authHeader.split(' ')[1];
     const decodedToken = jwt.decode(token, {
         complete: true
     });
@@ -69,7 +76,9 @@ module.exports = {
 
     add_courses: async function (req,res){
         if(req.body.CourseID){
-        var token = req.cookies.acc;
+        const authHeader = req.headers['authorization'];
+        // Extract token from header
+        const token = authHeader && authHeader.split(' ')[1];
         const decodedToken = jwt.decode(token, {
             complete: true
             });
@@ -98,7 +107,9 @@ module.exports = {
             }
     },
     remove_courses: async function (req,res){
-        var token = req.cookies.acc;
+        const authHeader = req.headers['authorization'];
+        // Extract token from header
+        const token = authHeader && authHeader.split(' ')[1];
         const decodedToken = jwt.decode(token, {
             complete: true
             });
@@ -125,7 +136,9 @@ module.exports = {
     notifget: async function (req,res){
         {
             try {
-                var token = req.cookies.acc;
+                const authHeader = req.headers['authorization'];
+        // Extract token from header
+        const token = authHeader && authHeader.split(' ')[1];
                 const decodedToken = jwt.decode(token, {
                     complete: true
                 });
@@ -140,7 +153,9 @@ module.exports = {
     notifdel: async function (req,res){
         {
             try {
-                var token = req.cookies.acc;
+                const authHeader = req.headers['authorization'];
+        // Extract token from header
+        const token = authHeader && authHeader.split(' ')[1];
                 const decodedToken = jwt.decode(token, {
                     complete: true
                 });

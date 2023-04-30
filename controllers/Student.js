@@ -12,12 +12,16 @@ module.exports = {
     read: async function (req,res){
         {
             try {
-                var token = req.cookies.acc;
+                const authHeader = req.headers['authorization'];
+                // Extract token from header
+                const token = authHeader && authHeader.split(' ')[1];
                 const decodedToken = jwt.decode(token, {
                     complete: true
                 });
                 const user = await UserModel.findOne({_id : decodedToken.payload.id});
+                console.log(user)
                 const std = await StudentModel.findOne({ID : decodedToken.payload.id});
+                console.log('Access1',res.getHeader('Access'))
                 res.status(200).json({data: user,std});
             } catch(error) {
                 res.status(404).json({message: error.message});
@@ -26,14 +30,14 @@ module.exports = {
     },
 
     update : async function (req,res){
-        var token = req.cookies.acc;
+        const authHeader = req.headers['authorization'];
+                // Extract token from header
+                const token = authHeader && authHeader.split(' ')[1];
         const decodedToken = jwt.decode(token, {
                 complete: true
         });
 
-        if(req.body.Password){
-            req.body.Password = await bcrypt.hashSync(req.body.Password, 10);
-        }
+        
     
         await UserModel.findOneAndUpdate({_id: decodedToken.payload.id}, req.body, { useFindAndModify: false }).then(data => {
             if (!data) {
@@ -51,7 +55,9 @@ module.exports = {
     },
 
     destroy: async function (req,res){
-    var token = req.cookies.acc;
+        const authHeader = req.headers['authorization'];
+        // Extract token from header
+        const token = authHeader && authHeader.split(' ')[1];
             const decodedToken = jwt.decode(token, {
                  complete: true
             });
@@ -82,13 +88,19 @@ module.exports = {
 
     notifget: async function (req,res){
         {
+            console.log("notifget");
             try {
-                var token = req.cookies.acc;
+                const authHeader = req.headers['authorization'];
+        // Extract token from header
+                const token = authHeader && authHeader.split(' ')[1];
                 const decodedToken = jwt.decode(token, {
                     complete: true
                 });
                 const user = await UserModel.findOne({_id : decodedToken.payload.id});
-                res.status(200).json({data: user.Notification});
+                
+                res.status(200).json({Headers : res.getHeader("access") ,data: user.Notification});
+                // console.log("here _____________________")
+                // console.log(res.getHeader("access"));
             } catch(error) {
                 res.status(404).json({message: error.message});
             }
@@ -98,7 +110,9 @@ module.exports = {
     notifdel: async function (req,res){
         {
             try {
-                var token = req.cookies.acc;
+                const authHeader = req.headers['authorization'];
+        // Extract token from header
+        const token = authHeader && authHeader.split(' ')[1];
                 const decodedToken = jwt.decode(token, {
                     complete: true
                 });
@@ -117,7 +131,9 @@ module.exports = {
     coursepurchase: async function (req,res){
         {
             try {
-                var token = req.cookies.acc;
+                const authHeader = req.headers['authorization'];
+        // Extract token from header
+        const token = authHeader && authHeader.split(' ')[1];
                 const decodedToken = jwt.decode(token, {
                     complete: true
                 });
@@ -135,6 +151,7 @@ module.exports = {
                 notifgen(user,str2)
                 res.status(200).json({data:"Course Purchased Successfully" });
             } catch(error) {
+                console.log(error)
                 res.status(404).json({message: error.message});
             }
         };
@@ -143,7 +160,9 @@ module.exports = {
     coursedelete: async function (req,res){
         {
             try {
-                var token = req.cookies.acc;
+                const authHeader = req.headers['authorization'];
+        // Extract token from header
+        const token = authHeader && authHeader.split(' ')[1];
                 const decodedToken = jwt.decode(token, {
                     complete: true
                 });
@@ -188,7 +207,9 @@ module.exports = {
                         }
                     }
                 }
-                var token = req.cookies.acc;
+                const authHeader = req.headers['authorization'];
+        // Extract token from header
+        const token = authHeader && authHeader.split(' ')[1];
                 const decodedToken = jwt.decode(token, {
                     complete: true
                 });

@@ -9,7 +9,9 @@ const {sendVerificationEmail} = require('../../middlewares/email');
 
 module.exports = {
     create: async function(req, res, next) {
-        if (!(req.body.UserName||req.body.Password||req.body.Name||req.body.Age||req.body.Email||req.body.Role||req.body.CreditCard)){
+        console.log('hi')
+        console.log(req.body)
+        if (!(req.body.UserName||req.body.Password||req.body.Name||req.body.Age||req.body.Email||req.body.Role)){
             res.json({status: "failure", message: "Incomplete Information", data: null});
             // next();
         }
@@ -17,12 +19,14 @@ module.exports = {
             res.json({status: "failure", message: "Incorrect Role", data: null});
             // next();
         }
+        else{
         await UserModel.find({UserName:req.body.Email}). then ( async userInfo => {
             if(userInfo.length == 0){         
 
                 await UserModel.create({ UserName: req.body.UserName, Password: req.body.Password, Name: req.body.Name,Age: req.body.Age,Gender: req.body.Gender,Email: req.body.Email,Role: req.body.Role, Notification:[],ProfilePic : req.body.ProfilePic,BIO: req.body.BIO, CreditCard: {cardNumber: req.body.cardNumber,expirationDate: req.body.expirationDate, securityCode:req.body.securityCode}, CreatedAt: new Date()}, async function (err, result) {
                     
                     if (err){ 
+                        console.log(err.message)
                         res.send({status :"failure",message : err.message});
                     }
                     else{
@@ -41,7 +45,8 @@ module.exports = {
             }
         }).catch(err => {
             res.json({status:"error", message: err, data:null});
-        }); 
+        });
+        } 
 
     },
     verify : async (req, res) => {

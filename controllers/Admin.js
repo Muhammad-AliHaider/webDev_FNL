@@ -47,7 +47,9 @@ module.exports = {
                     else{
                         StudentModel.create({ID: result._id })
                     }
-                    var token = req.cookies.acc;
+                    const authHeader = req.headers['authorization'];
+        // Extract token from header
+        const token = authHeader && authHeader.split(' ')[1];
                     const decodedToken = jwt.decode(token, {
                     complete: true
                     });
@@ -75,7 +77,9 @@ module.exports = {
                     message: `User not found.`
                 });
             }else{
-                var token = req.cookies.acc;
+                const authHeader = req.headers['authorization'];
+        // Extract token from header
+        const token = authHeader && authHeader.split(' ')[1];
                 const decodedToken = jwt.decode(token, {
                 complete: true
                 });
@@ -124,7 +128,9 @@ module.exports = {
     },
     update : async function (req,res){
         // update username and email check missing 
-        var token = req.cookies.acc;
+        const authHeader = req.headers['authorization'];
+        // Extract token from header
+        const token = authHeader && authHeader.split(' ')[1];
         const decodedToken = jwt.decode(token, {
             complete: true
         });
@@ -159,7 +165,9 @@ module.exports = {
             message: `User not found.`
           });
         } else {
-            var token = req.cookies.acc;
+            const authHeader = req.headers['authorization'];
+        // Extract token from header
+        const token = authHeader && authHeader.split(' ')[1];
             const decodedToken = jwt.decode(token, {
             complete: true
             });
@@ -194,7 +202,9 @@ module.exports = {
                         message: `User not found.`
                     });
                 }else{
-                    var token = req.cookies.acc;
+                    const authHeader = req.headers['authorization'];
+        // Extract token from header
+        const token = authHeader && authHeader.split(' ')[1];
                     const decodedToken = jwt.decode(token, {
                     complete: true
                     });
@@ -228,7 +238,9 @@ module.exports = {
                         message: `User not found.`
                     });
                 }else{
-                    var token = req.cookies.acc;
+                    const authHeader = req.headers['authorization'];
+        // Extract token from header
+        const token = authHeader && authHeader.split(' ')[1];
                     const decodedToken = jwt.decode(token, {
                     complete: true
                     });
@@ -278,7 +290,9 @@ module.exports = {
     notifget: async function (req,res){
         {
             try {
-                var token = req.cookies.acc;
+                const authHeader = req.headers['authorization'];
+        // Extract token from header
+        const token = authHeader && authHeader.split(' ')[1];
                 const decodedToken = jwt.decode(token, {
                     complete: true
                 });
@@ -293,7 +307,9 @@ module.exports = {
     notifdel: async function (req,res){
         {
             try {
-                var token = req.cookies.acc;
+                const authHeader = req.headers['authorization'];
+        // Extract token from header
+        const token = authHeader && authHeader.split(' ')[1];
                 const decodedToken = jwt.decode(token, {
                     complete: true
                 });

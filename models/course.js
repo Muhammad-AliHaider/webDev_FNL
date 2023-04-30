@@ -14,6 +14,11 @@ const CourseSchema = new Schema({
         trim: true,  
         required: true
     },
+    Price: {
+        type: String,
+        trim: true,  
+        required: false //until further notice
+    },
     Description: {
         type: String,
         trim: true,  
@@ -48,6 +53,11 @@ const CourseSchema = new Schema({
         required: true,
         default: Date.now()
     },
+    status :{
+        type: Boolean,
+        default: true,
+        required: true,
+    }
 });
 
 CourseSchema.pre('save', function(next){

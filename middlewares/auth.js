@@ -4,8 +4,13 @@ User = require("../models/user");
 module.exports = {
 verifyToken: function(req, res,next) {
     
-    var token = req.cookies.acc;
+    const authHeader = req.headers['authorization'];
+    // Extract token from header
+    const token = authHeader && authHeader.split(' ')[1];
     if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
+    console.log('token',token)
+    const rtoken = req.headers['refresh-token'];
+    console.log('rtoken',rtoken)
     
     
     
@@ -16,40 +21,44 @@ verifyToken: function(req, res,next) {
         });
     
         if(new Date().getTime()/1000> decodedToken.payload.exp){
-            if (req.cookies?.jwt) {
+            if (rtoken) {
 
-                const refreshToken = req.cookies.jwt;
+                const refreshToken = rtoken;
         
                 jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, 
                 (err, decoded) => {
                     if (err) {
-                        return res.status(406).json({ message: 'Unauthorized' });
+                        return res.status(406).json({auth: false, message: 'Unauthorized' });
                     }
                     else {
                         const accessToken = jwt.sign({
                             id: decoded._id,role: decoded.role}, process.env.ACCESS_TOKEN_SECRET, {
                             expiresIn: '300s'
                         });
-                        res.cookie('acc', accessToken, { httpOnly: true, 
-                        });
+                        res.set('Access-Control-Expose-Headers', 'access');
+                        res.set('Access', accessToken);
         
                     }
                 })
             } else {
-                return res.status(406).json({ message: 'Unauthorized' });
+                return res.status(406).json({auth: false, message: 'Unauthorized' });
             }
         }
         else{
             return res.status(500).send({auth: false, message: 'Failed to authenticate token.' });
         }
       } 
+      res.set('Access-Control-Expose-Headers', 'access');
+      res.set('Access', token);
       next();
     });
 },
 
 verifyAdmin: function (req, res,next){
     
-    var token = req.cookies.acc;
+    const authHeader = req.headers['authorization'];
+        // Extract token from header
+        const token = authHeader && authHeader.split(' ')[1];
     if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
     const decodedToken = jwt.decode(token, {
         complete: true
@@ -62,7 +71,12 @@ verifyAdmin: function (req, res,next){
 
 verifyStudent: function(req, res,next) {
     
-    var token = req.cookies.acc;
+    const authHeader = req.headers['authorization'];
+
+    console.log(authHeader);
+    // Extract token from header
+    const token = authHeader && authHeader.split(' ')[1];
+    //console.log(token);
     if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
     const decodedToken = jwt.decode(token, {
         complete: true
@@ -75,7 +89,10 @@ verifyStudent: function(req, res,next) {
 
 verifyTeacher: function(req, res,next)  {
     
-    var token = req.cookies.acc;
+    const authHeader = req.headers['authorization'];
+        // Extract token from header
+        const token = authHeader && authHeader.split(' ')[1];
+        console.log(token);
     if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
     const decodedToken = jwt.decode(token, {
         complete: true

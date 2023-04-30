@@ -25,6 +25,11 @@ const MaterialSchema = new Schema({
         trim: true,
         default: Date.now(),
         required: true
+    },
+    status :{
+        type: Boolean,
+        default: true,
+        required: true,
     }
 
 });
