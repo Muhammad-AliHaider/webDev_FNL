@@ -25,7 +25,7 @@ const VideoSchema = new Schema({
         required: true
     },
     QuizID: {
-        type: [mongoose.Schema.Types.ObjectId],
+        type: mongoose.Schema.Types.ObjectId,
         trim: true,  
         ref: 'Quiz'
     },

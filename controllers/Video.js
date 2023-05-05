@@ -109,13 +109,13 @@ module.exports = {
             res.json({status: "failure", message: "Incomplete Information", data: null});
         }
         else{
-        await VideoModel.findOneAndUpdate({_id : req.body._id  ,status : true}, {$push: {QuizID: req.body.QuizID}}, { useFindAndModify: false }).then(data => {
+        await VideoModel.findOneAndUpdate({_id : req.body._id  ,status : true}, {QuizID: req.body.QuizID}, { useFindAndModify: false }).then(data => {
             if (data.length == 0) {
                 res.status(404).send({
                     message: 'Video not found.'
                 });
             }else{
-                res.send({ message: "Video updated successfully." })
+                res.status(200).send({ message: "Video updated successfully." })
             }
         }
         ).catch(err => {
@@ -129,12 +129,12 @@ module.exports = {
 
     remove_quiz: async function(req,res){
         if(!(req.body._id&&req.body.QuizID)){
-            res.json({status: "failure", message: "Incomplete Information", data: null});
+            res.status(406).json({status: "failure", message: "Incomplete Information", data: null});
         }
         else{
-        await VideoModel.findOneAndUpdate({_id : req.body._id}, {$pull: {QuizID: req.body.QuizID}}, { useFindAndModify: false }).then(data => {
+        await VideoModel.findOneAndUpdate({_id : req.body._id ,QuizID: req.body.QuizID}, {QuizID: null}, { useFindAndModify: false }).then(data => {
             if (data.length == 0) {
-                res.status(404).send({
+                res.status(406).send({
                     message: `Video not found.`
                 });
             }else{

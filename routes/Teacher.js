@@ -66,7 +66,8 @@ router.put('/remove_quiz',verifyTeacher,verifyToken,VideoController.remove_quiz)
 // Quiz Management
 router.post('/create_quiz',verifyTeacher,verifyToken,QuizController.create);
 router.get('/get_quiz',verifyTeacher,verifyToken,QuizController.read);
-router.delete('/delete_quiz',verifyTeacher,verifyToken,QuizController.destroy);
+router.delete('/delete_Quiz',verifyTeacher,verifyToken,QuizController.destroy);
+
 // add quiz_card in quiz
 router.put('/add_content',verifyTeacher,verifyToken,QuizController.add_content);
 router.put('/remove_content',verifyTeacher,verifyToken,QuizController.remove_content);
