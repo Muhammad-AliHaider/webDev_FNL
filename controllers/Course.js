@@ -6,7 +6,7 @@ module.exports = {
         if (!(req.body.Name||req.body.Description||req.body.Thumbnail)){
             res.json({status: "failure", message: "Incomplete Information", data: null});
         }
-        await CourseModel.create({ Name: req.body.Name.toUpperCase(), Description: req.body.Description, Thumbnail: req.body.Thumbnail, CreatedAt:new Date(), status :true}, function (err, result) {
+        await CourseModel.create({Teacher: req.body.Teacher.toUpperCase() ,Topic: req.body.Topic.toUpperCase(),Language: req.body.Language.toUpperCase(), Name: req.body.Name.toUpperCase(), Description: req.body.Description, Thumbnail: req.body.Thumbnail, CreatedAt:new Date()}, function (err, result) {
             if (err){ 
                 console.log(err);
                 res.json({status: "failure", message: "Course not added!!!", data: null});
@@ -19,7 +19,8 @@ module.exports = {
     },
 
     read: async function(req, res, next) {
-        if(req.query._id){
+        console.log(req.body._id)
+        if(req.body._id){
             try{
                 const ser = await CourseModel.find({_id : req.query._id , status :true}).populate('VideoID').populate('MaterialID');
                 if(ser.length != 0){
@@ -30,7 +31,7 @@ module.exports = {
                 }
             }
             catch(err){
-                res.json({status: "failure", message: "Course not found!!!", data: null});
+                res.json({status: "failure1", message: "Course not found!!!", data: null});
             }
         }
         else if(req.body.Name){

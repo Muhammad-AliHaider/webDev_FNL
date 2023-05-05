@@ -19,11 +19,12 @@ module.exports = {
                     complete: true
                 });
                 const user = await UserModel.findOne({_id : decodedToken.payload.id});
-                console.log(user)
+                //console.log(user)
                 const std = await StudentModel.findOne({ID : decodedToken.payload.id});
-                console.log('Access1',res.getHeader('Access'))
+                //console.log(Acces's1',res.getHeader('Access'))
                 res.status(200).json({data: user,std});
             } catch(error) {
+                
                 res.status(404).json({message: error.message});
             }
         };
@@ -139,10 +140,10 @@ module.exports = {
                 });
                 const user = await UserModel.findOne({_id : decodedToken.payload.id});
                 const student = await StudentModel.findOne({ID: user._id});
-                const combined = student.CourseEnrolled.concat({id: req.body.ID,progress:[]});
-                console.log(combined,1)
-                await StudentModel.findOneAndUpdate({ID: decodedToken.payload.id},{CourseEnrolled: combined}, { useFindAndModify: false })
                 const course = await CourseModel.findOne({_id: req.body.ID})
+                const combined = student.CourseEnrolled.concat({id: req.body.ID,progress:[],name: course.Name});
+                //console.log(combined,1)
+                await StudentModel.findOneAndUpdate({ID: decodedToken.payload.id},{CourseEnrolled: combined}, { useFindAndModify: false })
                 var enrol = course.Students
                 enrol.push(decodedToken.payload.id)
                 await CourseModel.findOneAndUpdate({_id: req.body.ID},{Students: enrol}, { useFindAndModify: false })
@@ -151,7 +152,7 @@ module.exports = {
                 notifgen(user,str2)
                 res.status(200).json({data:"Course Purchased Successfully" });
             } catch(error) {
-                console.log(error)
+                //console.log(error)
                 res.status(404).json({message: error.message});
             }
         };
@@ -214,22 +215,25 @@ module.exports = {
                     complete: true
                 });
                 var student = await StudentModel.findOne({ID : decodedToken.payload.id});
-                var inter =[]
+                
                 for (let i = 0; i < student.CourseEnrolled.length; i++) {
+                    var inter =[]
                     if (req.body.course_id == student.CourseEnrolled[i].id){
+                        const nm = student.CourseEnrolled[i].name
                         const ids = student.CourseEnrolled[i].id
                         interim = student.CourseEnrolled.filter(object =>{
                             return object.id == ids;
                         })
-                        console.log(interim)
-                        var old = interim[0].progress.concat({quiz: req.body.quiz_id,score: score })
+                        //console.log(interim)
+                        var old = interim[0].progress.concat({quiz: req.body.quiz_id,score: score , name: quiz.Name})
                         inter = student.CourseEnrolled.filter(object =>{
                             return object.id != ids;
                         })
-                        inter.push({id: ids , progress: old})
+                        inter.push({id: ids , progress: old,name : nm})
+                        await StudentModel.findOneAndUpdate({ID: decodedToken.payload.id},{CourseEnrolled: inter}, { useFindAndModify: false })
                     }
                 }
-                await StudentModel.findOneAndUpdate({ID: decodedToken.payload.id},{CourseEnrolled: inter}, { useFindAndModify: false })
+               
                 res.status(200).json({data:"Quiz Submitted Successfully", Score:score,OutOf: 10});
             } catch(error) {
                 res.status(404).json({message: error.message});

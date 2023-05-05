@@ -9,6 +9,21 @@ const CourseSchema = new Schema({
         trim: true,  
         required: true
     },
+    Language: {
+        type: String,
+        trim: true,  
+        required: true
+    },
+    Topic: {
+        type: String,
+        trim: true,  
+        required: true
+    },
+    Teacher: {
+        type: String,
+        trim: true,  
+        required: true
+    },
     Thumbnail: {
         type: String,
         trim: true,  
