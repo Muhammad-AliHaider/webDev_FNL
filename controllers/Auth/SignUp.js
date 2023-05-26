@@ -30,7 +30,7 @@ module.exports = {
                         res.send({status :"failure",message : err.message});
                     }
                     else{
-                        if(req.body.Role == 2){
+                        if(req.body.Role == "2"){
                             TeacherModel.create({ID: result._id })
                         }
                         else{

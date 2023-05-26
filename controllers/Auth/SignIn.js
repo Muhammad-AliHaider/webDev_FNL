@@ -23,15 +23,17 @@ module.exports = {
                      res.status(200).json({status:"success", message: "user found!!!", data:{user: userInfo[0], token:token,rtoken:rtoken}});
                      console.log(res);
                 }else{
-                   // console.log('glt')
+                   console.log('glt')
                     res.status(404).json({status:"failure", message: "Invalid password!!!", data:null});
                 }
             }
         }).catch(err => {
+            console.log('glt - errir')
             res.status(404).json({status:"error", message: err, data:null});
         });
         }
         else{
+            console.log('glt - incomplete info')
             res.status(404).json({status:"error", message: "Incomplete Info", data:null});
         }
     },

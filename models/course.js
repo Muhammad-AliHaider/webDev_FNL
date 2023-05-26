@@ -20,14 +20,15 @@ const CourseSchema = new Schema({
         required: true
     },
     Teacher: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         trim: true,  
         required: true
     },
     Thumbnail: {
         type: String,
         trim: true,  
-        required: true
+        required: false
     },
     Price: {
         type: String,
@@ -65,7 +66,7 @@ const CourseSchema = new Schema({
     UpdatedAt: {
         type: Date,
         trim: true,  
-        required: true,
+        required: false,
         default: Date.now()
     },
     status :{

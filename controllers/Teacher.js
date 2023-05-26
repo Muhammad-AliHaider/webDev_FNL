@@ -12,7 +12,7 @@ module.exports = {
             try {
                 const authHeader = req.headers['authorization'];
         // Extract token from header
-        const token = authHeader && authHeader.split(' ')[1];
+                const token = authHeader && authHeader.split(' ')[1];
                 const decodedToken = jwt.decode(token, {
                     complete: true
                 });
@@ -20,7 +20,7 @@ module.exports = {
                 const teacher = await TeacherModel.findOne({ID : decodedToken.payload.id}).populate('CourseOffered');
                 if(user!= null && teacher!= null){
                 console.log(res.getHeaders("access"));
-                res.status(200).json({Header: res.getHeaders("access"),data: user,teacher});}
+                res.status(200).json({Header: res.getHeaders("access"),data: {user,teacher}});}
                 else
                 res.status(404).json({message: "User not found."});
             } catch(error) {
@@ -75,21 +75,16 @@ module.exports = {
     },
 
     add_courses: async function (req,res){
-        if(req.body.CourseID){
-        const authHeader = req.headers['authorization'];
-        // Extract token from header
-        const token = authHeader && authHeader.split(' ')[1];
-        const decodedToken = jwt.decode(token, {
-            complete: true
-            });
-            await TeacherModel.findOneAndUpdate({ID: decodedToken.payload.id}, {$push: {CourseOffered: req.body.CourseID}}, { useFindAndModify: false }).then(async data => {
+        if(req.body.CourseID , req.body.Teacher_Id){
+        
+            await TeacherModel.findOneAndUpdate({ID: req.body.Teacher_Id}, {$push: {CourseOffered: req.body.CourseID}}, { useFindAndModify: false }).then(async data => {
                 if (data == null) {
                     res.status(404).send({
                         message: `User not found.`
                     });
                 }else{
-                    const user = await UserModel.findOne({_id: decodedToken.payload.id})
-                    const course = await CourseModel.findOne({_id: req.body.CourseID})
+                    const user = await UserModel.findOne({_id: req.body.Teacher_Id}).catch(err => {console.log("error yeha aya hai")})
+                    const course = await CourseModel.findOne({_id: req.body.CourseID}).catch(err => {console.log("error yeha aya hai")})
                     str1 = "New Course Added: "
                     str2 = str1.concat(course.Name)
                     notifgen(user,str2)
@@ -107,13 +102,8 @@ module.exports = {
             }
     },
     remove_courses: async function (req,res){
-        const authHeader = req.headers['authorization'];
-        // Extract token from header
-        const token = authHeader && authHeader.split(' ')[1];
-        const decodedToken = jwt.decode(token, {
-            complete: true
-            });
-            await TeacherModel.findOneAndUpdate({ID: decodedToken.payload.id}, {$pull: {CourseOffered: req.body.CourseID}}, { useFindAndModify: false }).then(async data => {
+        if(req.body.CourseID , req.body.Teacher_Id){
+            await TeacherModel.findOneAndUpdate({ID: req.body.Teacher_Id}, {$pull: {CourseOffered: req.body.CourseID}}, { useFindAndModify: false }).then(async data => {
                 if (data.length == 0) {
                     res.status(404).send({
                         message: `User not found.`
@@ -122,7 +112,7 @@ module.exports = {
                     const course = await CourseModel.findOne({_id: req.body.CourseID})
                     str1 = "Course Deleted: "
                     str2 = str1.concat(course.Name)
-                    user = await UserModel.findOne({_id: decodedToken.payload.id})
+                    user = await UserModel.findOne({_id: req.body.Teacher_Id})
                     notifgen(user,str2)
                     res.send({ message: "Course  Removed successfully." })
                 }
@@ -131,6 +121,12 @@ module.exports = {
                     message: err.message
                 });
             });
+        }
+        else{
+            res.status(500).send({
+                message: "Course ID not provided"
+            });
+        }
     },
 
     notifget: async function (req,res){
