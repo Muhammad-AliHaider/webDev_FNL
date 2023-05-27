@@ -58,7 +58,8 @@ module.exports = {
                 console.log("yeha aya")
             const ser = await CourseModel.find({ status :true});
             if(ser.length != 0){
-                res.status(200).json({status: "success", message: "Course found!!!", data: ser});
+                console.log('Course',ser)
+                res.json({status: "success", message: "Course found!!!", data: ser});
             }
             else{
                 res.status(400).json({status: "failure", message: "Course not found!!!", data: null});

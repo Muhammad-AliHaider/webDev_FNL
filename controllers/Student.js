@@ -23,6 +23,7 @@ module.exports = {
                 const std = await StudentModel.findOne({ID : decodedToken.payload.id});
                 //console.log(Acces's1',res.getHeader('Access'))
                 res.status(200).json({data: user,std});
+                
             } catch(error) {
                 
                 res.status(404).json({message: error.message});
@@ -239,7 +240,57 @@ module.exports = {
                 res.status(404).json({message: error.message});
             }
         };
-    }
+    },
+
+    courseread: async function(req, res, next) {
+        console.log(req.body._id)
+        if(req.body._id){
+            try{
+                const ser = await CourseModel.find({_id : req.body._id , status :true}).populate('VideoID').populate('MaterialID');
+                if(ser.length != 0){
+                    res.json({status: "success", message: "Course found!!!", data: ser});
+                }
+                else{
+                    res.json({status: "failure", message: "Course not found!!!", data: null});
+                }
+            }
+            catch(err){
+                res.json({status: "failure1", message: "Course not found!!!", data: null});
+            }
+        }
+        else if(req.body.Name){
+            try {
+                const courses = await CourseModel.find({status :true});
+                if(req.body.Name){
+                    const inter = courses.filter(object =>{
+                        return object.Name.includes((req.body.Name).toUpperCase());
+                    })
+                    res.status(200).json(inter);
+                }
+                else{
+                    res.status(200).json(courses);
+                }
+            } catch(error) {
+                res.status(404).json({message: error.message});
+            }
+        }
+        else{
+            try{
+                console.log("yeha aya")
+            const ser = await CourseModel.find({ status :true});
+            if(ser.length != 0){
+                console.log('Course',ser)
+                res.json({status: "success", message: "Course found!!!", data: ser});
+            }
+            else{
+                res.json({status: "failure", message: "Course not found!!!", data: null});
+            }}
+            catch(err){
+                res.json({status: "failure", message: "Course not found!!!", data: null});
+            }
+        }
+
+    },
 
    
 }

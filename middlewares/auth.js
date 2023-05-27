@@ -3,7 +3,7 @@ User = require("../models/user");
 
 module.exports = {
 verifyToken: function(req, res,next) {
-    
+    console.log('No')
     const authHeader = req.headers['authorization'];
     // Extract token from header
     const token = authHeader && authHeader.split(' ')[1];
@@ -71,7 +71,7 @@ verifyAdmin: function (req, res,next){
 
 verifyStudent: function(req, res,next) {
     
-    console.log('authorizatio')
+    console.log(req.headers['authorization'])
     const authHeader = req.headers['authorization'];
 
     console.log(authHeader);
