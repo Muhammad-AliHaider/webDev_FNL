@@ -27,6 +27,31 @@ module.exports = {
         });
     },
 
+    profileupdate : async function (req,res){
+        const authHeader = req.headers['authorization'];
+                // Extract token from header
+                const token = authHeader && authHeader.split(' ')[1];
+        const decodedToken = jwt.decode(token, {
+                complete: true
+        });
+
+        
+    
+        await UserModel.findOneAndUpdate({_id: decodedToken.payload.id}, req.body.profileData, { useFindAndModify: false }).then(data => {
+            if (!data) {
+                res.status(404).send({
+                    message: `User not found.`
+                });
+            }else{
+                res.status(200).send({ message: "User updated successfully." })
+            }
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message
+            });
+        });
+    },
+
     add_user:async function(req, res, next) {
         if (!(req.body.UserName||req.body.Password||req.body.Name||req.body.Age||req.body.Email||req.body.Role||req.body.CreditCard)){
             res.json({status: "failure", message: "Incomplete Information", data: null});
@@ -102,6 +127,70 @@ module.exports = {
                 message: "UserName not given."
             });
         }
+    },
+
+    readprofile: async function (req,res){
+        {
+            try {
+                const authHeader = req.headers['authorization'];
+                // Extract token from header
+                const token = authHeader && authHeader.split(' ')[1];
+                const decodedToken = jwt.decode(token, {
+                    complete: true
+                });
+                const user = await UserModel.findOne({_id : decodedToken.payload.id});
+                //console.log(user)
+                const std = await StudentModel.findOne({ID : decodedToken.payload.id});
+                //console.log(Acces's1',res.getHeader('Access'))
+                res.status(200).json({data: user,std});
+                
+            } catch(error) {
+                
+                res.status(404).json({message: error.message});
+            }
+        };
+    },
+
+    notifget: async function (req,res){
+        {
+            console.log("notifget");
+            try {
+                const authHeader = req.headers['authorization'];
+        // Extract token from header
+                const token = authHeader && authHeader.split(' ')[1];
+                const decodedToken = jwt.decode(token, {
+                    complete: true
+                });
+                const user = await UserModel.findOne({_id : decodedToken.payload.id});
+                
+                res.status(200).json({Headers : res.getHeader("access") ,data: user.Notification});
+                // console.log("here _____________________")
+                // console.log(res.getHeader("access"));
+            } catch(error) {
+                res.status(404).json({message: error.message});
+            }
+        };
+    },
+
+    notifdel: async function (req,res){
+        {
+            try {
+                const authHeader = req.headers['authorization'];
+        // Extract token from header
+        const token = authHeader && authHeader.split(' ')[1];
+                const decodedToken = jwt.decode(token, {
+                    complete: true
+                });
+                const user = await UserModel.findOne({_id : decodedToken.payload.id});
+                const inter = user.Notification.filter(object =>{
+                    return object._id != req.body.ID;
+                })
+                await UserModel.findOneAndUpdate({_id: decodedToken.payload.id},{Notification: inter}, { useFindAndModify: false })
+                res.status(200).json({data:"Notification Deleted Successfully" });
+            } catch(error) {
+                res.status(404).json({message: error.message});
+            }
+        };
     },
 
 

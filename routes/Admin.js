@@ -13,6 +13,10 @@ const router = express.Router();
 
 // Admin Management
 //User Management
+router.get('/notification/get',verifyAdmin,verifyToken,AdminController.notifget);
+router.delete('/notification/delete',verifyAdmin,verifyToken, AdminController.notifdel);
+router.get('/profile/get',verifyAdmin,verifyToken,AdminController.readprofile);
+router.patch('/profile/update',verifyAdmin,verifyToken, AdminController.profileupdate);
 router.get('/',verifyAdmin,verifyToken,AdminController.read);
 router.put('/',verifyAdmin,verifyToken, AdminController.update);
 router.delete('/delete_user',verifyAdmin,verifyToken, AdminController.destroy);

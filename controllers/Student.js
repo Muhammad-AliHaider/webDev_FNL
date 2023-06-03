@@ -39,15 +39,16 @@ module.exports = {
                 complete: true
         });
 
-        
+        console.log(req.body)
     
-        await UserModel.findOneAndUpdate({_id: decodedToken.payload.id}, req.body, { useFindAndModify: false }).then(data => {
+        await UserModel.findOneAndUpdate({_id: decodedToken.payload.id}, req.body.profileData, { useFindAndModify: false }).then(data => {
             if (!data) {
                 res.status(404).send({
                     message: `User not found.`
                 });
             }else{
-                res.send({ message: "User updated successfully." })
+                console.log(data)
+                res.status(200).send({ message: "User updated successfully." })
             }
         }).catch(err => {
             res.status(500).send({

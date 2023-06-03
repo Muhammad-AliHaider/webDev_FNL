@@ -37,11 +37,8 @@ module.exports = {
             complete: true
         });
 
-        if(req.body.Password){
-            req.body.Password = await bcrypt.hashSync(req.body.Password, 10);
-        }
 
-        await UserModel.findOneAndUpdate({_id : decodedToken.payload.id}, req.body, { useFindAndModify: true }).then(data => {
+        await UserModel.findOneAndUpdate({_id : decodedToken.payload.id}, req.body.profileData, { useFindAndModify: true }).then(data => {
             if (!data) {
                 res.status(404).send({
                     message: `User not found.`
