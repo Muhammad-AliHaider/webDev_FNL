@@ -198,7 +198,7 @@ module.exports = {
     read: async function (req,res){
         if(!(req.body.UserName)){
             await UserModel.find({}).then(data => {
-                res.send({status : "Success", message : data});
+                res.send({status : "Success", data : data});
             }).catch(err => {
                 res.status(500).send({
                     message: err.message
@@ -207,7 +207,7 @@ module.exports = {
         }
         else{
             await UserModel.find({UserName : req.body.UserName}).then(data => {
-                res.send({status : "Success", message : data});
+                res.send({status : "Success", data : data});
             }).catch(err => {
                 res.status(500).send({
                     message: err.message
@@ -215,6 +215,37 @@ module.exports = {
             });
         }
     },
+
+    readteachers: async function (req,res){
+        var resp=[]
+        data=await UserModel.find({})
+        for(let i=0;i<data.length;i++){
+            if(data[i].Role == "2" || (data[i].Role == "1" )){
+            teach = await TeacherModel.find({ID:data[i]._id})
+            resp.push([data[i],teach])
+            }
+        }
+        console.log(resp)
+        res.send({status : "Success", data : resp});
+    },
+
+
+    getUserName: async function (req,res){
+       
+        console.log( req.body.Data._id)
+        await UserModel.find({_id : req.body.Data._id}).then(data => {
+            console.log(data[0].Name)
+            res.send({status : "Success", data : data[0].Name});
+            }).catch(err => {
+            res.status(500).send({
+                 message: err.message
+            });
+        });
+    
+    },
+
+
+    
     update : async function (req,res){
         // update username and email check missing 
         const authHeader = req.headers['authorization'];

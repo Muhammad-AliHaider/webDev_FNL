@@ -244,10 +244,28 @@ module.exports = {
     },
 
     courseread: async function(req, res, next) {
-        console.log(req.body._id)
+        console.log(req.body)
         if(req.body._id){
             try{
+                console.log( "bahar")
                 const ser = await CourseModel.find({_id : req.body._id , status :true}).populate('VideoID').populate('MaterialID');
+                if(ser.length != 0){
+                    res.json({status: "success", message: "Course found!!!", data: ser});
+                }
+                else{
+                    res.json({status: "failure", message: "Course not found!!!", data: null});
+                }
+            }
+            catch(err){
+                res.json({status: "failure1", message: "Course not found!!!", data: null});
+            }
+        }
+        else if(req.body.courseData._id){
+            try{
+                console.log(req.body.courseData._id)
+                console.log( "andar")
+                const ser = await CourseModel.find({_id : req.body.courseData._id , status :true}).populate('VideoID').populate('MaterialID');
+                console.log(ser)
                 if(ser.length != 0){
                     res.json({status: "success", message: "Course found!!!", data: ser});
                 }
