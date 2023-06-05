@@ -3,14 +3,14 @@ User = require("../models/user");
 
 module.exports = {
 verifyToken: function(req, res,next) {
-    
+    console.log('No')
     const authHeader = req.headers['authorization'];
     // Extract token from header
     const token = authHeader && authHeader.split(' ')[1];
     if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
-    console.log('token',token)
+    //console.log('token',token)
     const rtoken = req.headers['refresh-token'];
-    console.log('rtoken',rtoken)
+    //console.log('rtoken',rtoken)
     
     
     
@@ -71,17 +71,18 @@ verifyAdmin: function (req, res,next){
 
 verifyStudent: function(req, res,next) {
     
+    console.log(req.headers['authorization'])
     const authHeader = req.headers['authorization'];
 
     console.log(authHeader);
     // Extract token from header
     const token = authHeader && authHeader.split(' ')[1];
-    //console.log(token);
+    
     if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
     const decodedToken = jwt.decode(token, {
         complete: true
     });
-    if (decodedToken.payload.role != 3){
+    if (decodedToken.payload.role == 2){
         return res.status(406).json({ message: 'Unauthorized: Only Students Allowed' });
     }
     next();
@@ -97,7 +98,7 @@ verifyTeacher: function(req, res,next)  {
     const decodedToken = jwt.decode(token, {
         complete: true
     });
-    if (decodedToken.payload.role != 2){
+    if (decodedToken.payload.role == 3){
         return res.status(406).json({ message: 'Unauthorized: Only Teacher Allowed' });
     }
     next();

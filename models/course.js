@@ -9,10 +9,26 @@ const CourseSchema = new Schema({
         trim: true,  
         required: true
     },
-    Thumbnail: {
+    Language: {
         type: String,
         trim: true,  
         required: true
+    },
+    Topic: {
+        type: String,
+        trim: true,  
+        required: true
+    },
+    Teacher: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        trim: true,  
+        required: true
+    },
+    Thumbnail: {
+        type: String,
+        trim: true,  
+        required: false
     },
     Price: {
         type: String,
@@ -50,14 +66,18 @@ const CourseSchema = new Schema({
     UpdatedAt: {
         type: Date,
         trim: true,  
-        required: true,
+        required: false,
         default: Date.now()
     },
     status :{
         type: Boolean,
         default: true,
         required: true,
-    }
+    },
+    isPurchased :{
+        type: Boolean,
+        default: false,
+    },
 });
 
 CourseSchema.pre('save', function(next){

@@ -20,7 +20,7 @@ module.exports = {
     read: async function(req, res, next) {
         if(req.body._id){
             try{
-            const ser = await MaterialModel.find({_id : req.body._id});
+            const ser = await MaterialModel.find({_id : req.body._id, status : true});
             // console.log(ser);
             if(ser.length != 0){
                 res.json({status: "success", message: "Material found!!!", data: ser});
@@ -50,7 +50,7 @@ module.exports = {
         }
         else{
             try{
-            const ser = await MaterialModel.find({});
+            const ser = await MaterialModel.find({status : true});
             if(ser != null){
                 res.json({status: "success", message: "Material found!!!", data: ser});
             }
@@ -88,8 +88,8 @@ module.exports = {
 
     destroy : async function(req, res, next) {
         if(req.body._id){
-            await MaterialModel.findOneAndRemove({_id: req.body._id}, { useFindAndModify: false }).then(data =>{
-                if (!data) {
+            await MaterialModel.findOneAndUpdate({_id: req.body._id} , {status : false} , { useFindAndModify: false }).then(data => {
+                if (data.length == 0) {
                     res.status(404).send({
                         message: `Material not found.`
                     });

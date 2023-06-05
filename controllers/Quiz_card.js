@@ -6,7 +6,9 @@ module.exports = {
             res.json({status: "failure", message: "Incomplete Information", data: null});
         }
         else{
-            await Quiz_Card.create({Question: req.body.Question, Options: req.body.Options, Answer: req.body.Answer, CreatedAt: new Date()}, function (err, result) {
+            console.log(req.body.Question, req.body.Options, req.body.Answer);
+
+            await Quiz_Card.create({Question: req.body.Question, Options: req.body.Options,status: true ,Answer: req.body.Answer, CreatedAt: new Date()}, function (err, result) {
                 if (err){
                     console.log(err);
                     res.json({status: "failure", message: "Quiz Card not added!!!", data: null});

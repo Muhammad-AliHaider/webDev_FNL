@@ -20,9 +20,9 @@ module.exports = {
     
 
     read : async function(req, res, next) {
-        if(!req.body._id){
+        if(!req.query._id){
         try{
-            const ser = await QuizModel.find({}).populate('Quiz_card');
+            const ser = await QuizModel.find({status:true}).populate('Quiz_card');
             console.log(ser);
             if(ser.length != 0){
                 res.json({status: "success", message: "Quiz found!!!", data: ser});
@@ -37,7 +37,7 @@ module.exports = {
         }
         else{
             try{
-            const ser = await QuizModel.find({_id:req.body._id}).populate('Quiz_card');
+            const ser = await QuizModel.find({_id:req.query._id}).populate('Quiz_card');
             if(ser.length != 0){
                 res.json({status: "success", message: "Quiz found!!!", data: ser});
             }
@@ -51,15 +51,16 @@ module.exports = {
     },
 
     destroy : async function(req, res, next) {
-        if(!req.body._id){
-            res.status(404).send({
+        console.log(req.body.ID);
+        if(!req.body.ID){
+            res.status(406).send({
                 message: `Quiz id not given.`
             });
         }
         else{
-            await QuizModel.findOneAndRemove({_id:req.body._id},{useFindAndModify : false}).then(data => {
+            await QuizModel.findOneAndUpdate({_id:req.body.ID},{status : false},{useFindAndModify : false}).then(data => {
                 if (data.length == 0) {
-                    res.status(404).send({
+                    res.status(406).send({
                         message: `Quiz not found.`
                     });
                 }else{
@@ -106,6 +107,7 @@ module.exports = {
                         message: `Quiz not found.`
                     });
                 }else{
+                    
                     res.send({ message: "Quiz card removed successfully." , data_ : data })
                 }
             }).catch(err => {

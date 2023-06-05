@@ -41,7 +41,6 @@ const UserSchema = new Schema({
     Email: {
         type: String,
         trim: true,  
-        required: true,
         match: /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
     },
@@ -86,6 +85,12 @@ const UserSchema = new Schema({
             required:false,
             //match:/^[0-9]{3,4}$/,
             default: " "
+        },
+        cardholderName:{
+            type:String,
+            required:false,
+            //match:/^[0-9]{3,4}$/,
+            default: " "
         }
     },
     CreatedAt: {
@@ -107,11 +112,11 @@ const UserSchema = new Schema({
     
 });
 
-// UserSchema.pre('save', function(next){
-//     const hash = bcrypt.hashSync(this.Password, saltRounds);
-//     this.Password=hash;
-//     next();
-// });
+UserSchema.pre('save', function(next){
+    const hash = bcrypt.hashSync(this.Password, saltRounds);
+    this.Password=hash;
+    next();
+});
 var users = new mongoose.model('User',UserSchema);
 
 module.exports = users;

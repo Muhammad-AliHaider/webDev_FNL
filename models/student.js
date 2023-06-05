@@ -20,12 +20,19 @@ const StudentSchema = new Schema({
                     quiz:{
                         type: String,
                     },
+                    name:{
+                        type: String,
+                    },
                     score:{
                         type: Number,
                     }
                 }],
                 default:[]
-            }
+            },
+            name:{
+                type:String,
+                required: true
+            },
         }],
         trim: true,
         required:true,
