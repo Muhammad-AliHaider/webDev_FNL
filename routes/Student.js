@@ -14,6 +14,9 @@ router.get('/profile/get',verifyStudent,verifyToken,StudentController.read);
 router.patch('/profile/update',verifyStudent,verifyToken, StudentController.update);
 router.delete('/profile/delete',verifyStudent,verifyToken, StudentController.destroy);
 
+router.get('/course/get',verifyStudent,verifyToken,CourseController.read);
+router.get('/courses/get',verifyStudent,verifyToken,CourseController.read);
+
 router.post('/courser/get',verifyToken,StudentController.courseread);
 router.get('/course/get',verifyToken,CourseController.read);
 router.get('/courses/get',verifyStudent,verifyToken,CourseController.read);
