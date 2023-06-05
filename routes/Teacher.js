@@ -91,7 +91,7 @@ router.put('/remove_options',verifyTeacher,verifyToken,Quiz_cardController.remov
 
 
 router.get('/notification/get',verifyTeacher,verifyToken,TeacherController.notifget);
-router.patch('/notfication/delete',verifyTeacher,verifyToken, TeacherController.notifdel);
+router.delete('/notification/delete',verifyTeacher,verifyToken, TeacherController.notifdel);
 
 
 

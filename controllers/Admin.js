@@ -5,6 +5,7 @@ const StudentModel = require("../models/student");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const StudentController = require("./Student");
+const teachers = require("../models/teacher");
 
 module.exports = {
   create: async function (req, res, next) {
@@ -82,7 +83,7 @@ module.exports = {
         console.log(user);
 
         // Update credit card information
-        user.set(req.body.profileData.data);
+        user.set(req.body.profileData);
 
           console.log(user)
 
@@ -274,7 +275,7 @@ module.exports = {
         });
         const user = await UserModel.findOne({ _id: decodedToken.payload.id });
         const inter = user.Notification.filter((object) => {
-          return object._id != req.body.ID;
+          return object._id != req.body._id;
         });
         await UserModel.findOneAndUpdate(
           { _id: decodedToken.payload.id },
@@ -310,6 +311,16 @@ module.exports = {
           });
         });
     }
+  },
+
+  read_teachers: async function(req,res){
+    const teachers=await UserModel.find({Role:2})
+    var resp=[]
+    for(let i=0;i<teachers.length;i++){
+      data = await TeacherModel.find({ID : teachers[i]._id})
+      resp.push([teachers[i],data])
+    }
+    res.send({ status: "Success", data: resp });
   },
 
 
@@ -576,7 +587,7 @@ module.exports = {
         });
         const user = await UserModel.findOne({ _id: decodedToken.payload.id });
         const inter = user.Notification.filter((object) => {
-          return object._id != req.body.ID;
+          return object._id != req.body._id;
         });
         await UserModel.findOneAndUpdate(
           { _id: decodedToken.payload.id },

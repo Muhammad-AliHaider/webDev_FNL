@@ -37,7 +37,7 @@ const decodedToken = jwt.decode(token, {
   complete: true
 });
  
-console.log(req.body.profileData.data.user)
+
 
 UserModel.findOne({ _id: decodedToken.payload.id })
   .then(user => {
@@ -50,7 +50,7 @@ UserModel.findOne({ _id: decodedToken.payload.id })
     console.log(user);
 
     // Update user document
-    user.set(req.body.profileData.data); 
+    user.set(req.body.profileData); 
 
     // Save the updated user document
     return user.save();
@@ -167,8 +167,9 @@ UserModel.findOne({ _id: decodedToken.payload.id })
                 });
                 const user = await UserModel.findOne({_id : decodedToken.payload.id});
                 const inter = user.Notification.filter(object =>{
-                    return object._id != req.body.ID;
+                    return object._id != req.body._id;
                 })
+                console.log(inter)
                 await UserModel.findOneAndUpdate({_id: decodedToken.payload.id},{Notification: inter}, { useFindAndModify: false })
                 res.status(200).json({data:"Notification Deleted Successfully" });
             } catch(error) {

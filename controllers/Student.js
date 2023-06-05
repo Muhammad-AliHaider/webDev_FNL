@@ -59,7 +59,7 @@ UserModel.findOne({ _id: decodedToken.payload.id })
     }
 
     // Update user document
-    user.set(req.body.profileData.data);
+    user.set(req.body.profileData);
 
     // Save the updated user document
     return user.save();
@@ -132,6 +132,7 @@ UserModel.findOne({ _id: decodedToken.payload.id })
     notifdel: async function (req,res){
         {
             try {
+                console.log(req.body)
                 const authHeader = req.headers['authorization'];
         // Extract token from header
         const token = authHeader && authHeader.split(' ')[1];
@@ -140,8 +141,10 @@ UserModel.findOne({ _id: decodedToken.payload.id })
                 });
                 const user = await UserModel.findOne({_id : decodedToken.payload.id});
                 const inter = user.Notification.filter(object =>{
-                    return object._id != req.body.ID;
+                    return object._id != req.body._id;
                 })
+
+                console.log(inter)
                 await UserModel.findOneAndUpdate({_id: decodedToken.payload.id},{Notification: inter}, { useFindAndModify: false })
                 res.status(200).json({data:"Notification Deleted Successfully" });
             } catch(error) {
