@@ -311,6 +311,8 @@ module.exports = {
         });
     }
   },
+
+
   read: async function (req, res) {
     if (!req.body.UserName) {
       await UserModel.find({Role:3})
@@ -333,6 +335,20 @@ module.exports = {
           });
         });
     }
+  },
+
+  getUserName: async function (req, res) {
+    
+      await UserModel.find({ _id: req.body.Data._id })
+        .then((data) => {
+          res.send({ status: "Success", message: data.Name });
+        })
+        .catch((err) => {
+          res.status(500).send({
+            message: err.message,
+          });
+        });
+    
   },
   update: async function (req, res) {
     // update username and email check missing
