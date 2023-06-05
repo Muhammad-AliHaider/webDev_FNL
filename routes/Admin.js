@@ -20,10 +20,12 @@ router.delete('/notification/delete',verifyAdmin,verifyToken, AdminController.no
 router.get('/profile/get',verifyAdmin,verifyToken,AdminController.readprofile);
 router.patch('/profile/update',verifyAdmin,verifyToken, AdminController.profileupdate);
 router.get('/',verifyAdmin,verifyToken,AdminController.read);
+router.get('/get_teachers',verifyAdmin,verifyToken,AdminController.readteachers);
 router.put('/',verifyAdmin,verifyToken, AdminController.update);
 router.delete('/delete_user',verifyAdmin,verifyToken, AdminController.destroy);
 router.post('/add_user',verifyAdmin,verifyToken,AdminController.add_user);
 router.put('/update_user',verifyAdmin,verifyToken,AdminController.update_user);
+router.post('/get_user',verifyToken,AdminController.getUserName);
 
 router.put('/add_courses_teacher',verifyAdmin,verifyToken,AdminController.add_courses_teacher);
 router.put('/remove_courses_teacher',verifyAdmin,verifyToken,AdminController.remove_courses_teacher);
