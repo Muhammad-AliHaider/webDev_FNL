@@ -14,7 +14,9 @@ module.exports = {
             }
             else{
                 //console.log(req.body.Password, userInfo[0].Password)
-                if(req.body.Password == userInfo[0].Password) {
+                if(bcrypt.compare(req.body.Password, userInfo[0].Password))
+                // if(req.body.Password == userInfo[0].Password) 
+                {
                     console.log('sahi')
                     if (!userInfo[0].isVerified) return res.status(401).json({ type: 'not-verified', message: 'Your account has not been verified.' });
                     const token = jwt.sign({id: userInfo[0]._id,role: userInfo[0].Role}, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1d' },{data: new Date().getTime()/1000});

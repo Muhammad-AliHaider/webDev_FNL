@@ -112,11 +112,11 @@ const UserSchema = new Schema({
     
 });
 
-// UserSchema.pre('save', function(next){
-//     const hash = bcrypt.hashSync(this.Password, saltRounds);
-//     this.Password=hash;
-//     next();
-// });
+UserSchema.pre('save', function(next){
+    const hash = bcrypt.hashSync(this.Password, saltRounds);
+    this.Password=hash;
+    next();
+});
 var users = new mongoose.model('User',UserSchema);
 
 module.exports = users;
