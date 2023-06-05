@@ -82,7 +82,7 @@ verifyStudent: function(req, res,next) {
     const decodedToken = jwt.decode(token, {
         complete: true
     });
-    if (decodedToken.payload.role != 3){
+    if (decodedToken.payload.role == 2){
         return res.status(406).json({ message: 'Unauthorized: Only Students Allowed' });
     }
     next();
@@ -98,7 +98,7 @@ verifyTeacher: function(req, res,next)  {
     const decodedToken = jwt.decode(token, {
         complete: true
     });
-    if (decodedToken.payload.role != 2){
+    if (decodedToken.payload.role == 3){
         return res.status(406).json({ message: 'Unauthorized: Only Teacher Allowed' });
     }
     next();

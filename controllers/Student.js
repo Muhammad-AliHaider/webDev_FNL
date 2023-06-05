@@ -19,7 +19,7 @@ module.exports = {
                     complete: true
                 });
                 const user = await UserModel.findOne({_id : decodedToken.payload.id});
-                //console.log(user)
+                console.log(user)
                 const std = await StudentModel.findOne({ID : decodedToken.payload.id});
                 //console.log(Acces's1',res.getHeader('Access'))
                 res.status(200).json({data: user,std});
@@ -33,27 +33,47 @@ module.exports = {
 
     update : async function (req,res){
         const authHeader = req.headers['authorization'];
-                // Extract token from header
-                const token = authHeader && authHeader.split(' ')[1];
-        const decodedToken = jwt.decode(token, {
-                complete: true
-        });
+// Extract token from header
+const token = authHeader && authHeader.split(' ')[1];
+const decodedToken = jwt.decode(token, {
+  complete: true
+});
 
-        
-    
-        await UserModel.findOneAndUpdate({_id: decodedToken.payload.id}, req.body, { useFindAndModify: false }).then(data => {
-            if (!data) {
-                res.status(404).send({
-                    message: `User not found.`
-                });
-            }else{
-                res.send({ message: "User updated successfully." })
-            }
-        }).catch(err => {
-            res.status(500).send({
-                message: err.message
-            });
-        });
+console.log(req.body.profileData)
+
+UserModel.findOne({ _id: decodedToken.payload.id })
+  .then(user => {
+    if (!user) {
+      res.status(404).send({
+        message: `User not found.`
+      });
+      return;
+    }
+
+    // Assuming email is a field that should not be modified
+    if (req.body.profileData.email) {
+      res.status(400).send({
+        message: "Email address cannot be modified."
+      });
+      return;
+    }
+
+    // Update user document
+    user.set(req.body.profileData.data);
+
+    // Save the updated user document
+    return user.save();
+  })
+  .then(updatedUser => {
+    console.log(updatedUser);
+    res.status(200).send({ message: "User updated successfully." })
+  })
+  .catch(err => {
+    res.status(500).send({
+      message: err.message
+    });
+  });
+
     },
 
     destroy: async function (req,res){
@@ -134,28 +154,38 @@ module.exports = {
         {
             try {
                 const authHeader = req.headers['authorization'];
-        // Extract token from header
-        const token = authHeader && authHeader.split(' ')[1];
+                const token = authHeader && authHeader.split(' ')[1];
                 const decodedToken = jwt.decode(token, {
                     complete: true
                 });
+                console.log("Decoded token ID: ", decodedToken.payload.id); // log user ID from the token
+            
                 const user = await UserModel.findOne({_id : decodedToken.payload.id});
-                const student = await StudentModel.findOne({ID: user._id});
-                const course = await CourseModel.findOne({_id: req.body.ID})
-                const combined = student.CourseEnrolled.concat({id: req.body.ID,progress:[],name: course.Name});
-                //console.log(combined,1)
-                await StudentModel.findOneAndUpdate({ID: decodedToken.payload.id},{CourseEnrolled: combined}, { useFindAndModify: false })
-                var enrol = course.Students
-                enrol.push(decodedToken.payload.id)
-                await CourseModel.findOneAndUpdate({_id: req.body.ID},{Students: enrol}, { useFindAndModify: false })
-                str1 = "New Course Added: "
-                str2 = str1.concat(course.Name)
-                notifgen(user,str2)
+                let student = await StudentModel.findOne({ID: user._id});
+                let course = await CourseModel.findOne({_id: req.body.ID})
+            
+                console.log("Course ID: ", req.body.ID); // log course ID
+            
+                // Updating the student document
+                student.CourseEnrolled.push({id: req.body.ID, progress:[], name: course.Name});
+                await student.save(); 
+            
+                // Updating the course document
+                course.Students.push(decodedToken.payload.id);
+                course.isPurchased = true;
+                await course.save();
+            
+                var str1 = "New Course Added: ";
+                var str2 = str1.concat(course.Name);
+                notifgen(user, str2);
+            
                 res.status(200).json({data:"Course Purchased Successfully" });
+            
             } catch(error) {
-                //console.log(error)
+                console.error(error) // log any errors that occur
                 res.status(404).json({message: error.message});
             }
+            
         };
     },
 
@@ -243,10 +273,28 @@ module.exports = {
     },
 
     courseread: async function(req, res, next) {
-        console.log(req.body._id)
+        console.log(req.body)
         if(req.body._id){
             try{
+                console.log( "bahar")
                 const ser = await CourseModel.find({_id : req.body._id , status :true}).populate('VideoID').populate('MaterialID');
+                if(ser.length != 0){
+                    res.json({status: "success", message: "Course found!!!", data: ser});
+                }
+                else{
+                    res.json({status: "failure", message: "Course not found!!!", data: null});
+                }
+            }
+            catch(err){
+                res.json({status: "failure1", message: "Course not found!!!", data: null});
+            }
+        }
+        else if(req.body.courseData._id){
+            try{
+                console.log(req.body.courseData._id)
+                console.log( "andar")
+                const ser = await CourseModel.find({_id : req.body.courseData._id , status :true}).populate('VideoID').populate('MaterialID');
+                console.log(ser)
                 if(ser.length != 0){
                     res.json({status: "success", message: "Course found!!!", data: ser});
                 }

@@ -31,29 +31,39 @@ module.exports = {
 
     update : async function (req,res){
         const authHeader = req.headers['authorization'];
-        // Extract token from header
-        const token = authHeader && authHeader.split(' ')[1];
-        const decodedToken = jwt.decode(token, {
-            complete: true
-        });
+// Extract token from header
+const token = authHeader && authHeader.split(' ')[1];
+const decodedToken = jwt.decode(token, {
+  complete: true
+});
+ 
+console.log(req.body.profileData.data.user)
 
-        if(req.body.Password){
-            req.body.Password = await bcrypt.hashSync(req.body.Password, 10);
-        }
+UserModel.findOne({ _id: decodedToken.payload.id })
+  .then(user => {
+    if (!user) {
+      res.status(404).send({
+        message: `User not found.`
+      });
+      return;
+    }
+    console.log(user);
 
-        await UserModel.findOneAndUpdate({_id : decodedToken.payload.id}, req.body, { useFindAndModify: true }).then(data => {
-            if (!data) {
-                res.status(404).send({
-                    message: `User not found.`
-                });
-            }else{
-                res.send({ message: "User updated successfully." })
-            }
-        }).catch(err => {
-            res.status(500).send({
-                message: err.message
-            });
-        });
+    // Update user document
+    user.set(req.body.profileData.data); 
+
+    // Save the updated user document
+    return user.save();
+  })
+  .then(updatedUser => {
+    console.log(updatedUser);
+    res.status(200).send({ message: "User updated successfully." })
+  })
+  .catch(err => {
+    res.status(500).send({
+      message: err.message
+    });
+  });
     },
 
     destroy: async function (req,res){

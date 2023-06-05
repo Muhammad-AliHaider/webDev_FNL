@@ -41,7 +41,6 @@ const UserSchema = new Schema({
     Email: {
         type: String,
         trim: true,  
-        required: true,
         match: /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
     },
@@ -82,6 +81,12 @@ const UserSchema = new Schema({
             default: " "
         },
         securityCode:{
+            type:String,
+            required:false,
+            //match:/^[0-9]{3,4}$/,
+            default: " "
+        },
+        cardholderName:{
             type:String,
             required:false,
             //match:/^[0-9]{3,4}$/,

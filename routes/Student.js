@@ -16,8 +16,10 @@ router.delete('/profile/delete',verifyStudent,verifyToken, StudentController.des
 
 router.get('/course/get',verifyStudent,verifyToken,CourseController.read);
 router.get('/courses/get',verifyStudent,verifyToken,CourseController.read);
-router.post('/course/get',verifyToken,StudentController.courseread);
-router.post('/courses/get',verifyStudent,verifyToken,StudentController.courseread);
+
+router.post('/courser/get',verifyToken,StudentController.courseread);
+router.get('/course/get',verifyToken,CourseController.read);
+router.get('/courses/get',verifyStudent,verifyToken,CourseController.read);
 router.post('/course/purchase',verifyStudent,verifyToken,StudentController.coursepurchase);
 router.delete('/course/delete',verifyStudent,verifyToken, StudentController.coursedelete);
 router.get('/course/search',verifyStudent,verifyToken,CourseController.read);

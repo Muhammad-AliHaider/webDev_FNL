@@ -73,7 +73,11 @@ const CourseSchema = new Schema({
         type: Boolean,
         default: true,
         required: true,
-    }
+    },
+    isPurchased :{
+        type: Boolean,
+        default: false,
+    },
 });
 
 CourseSchema.pre('save', function(next){
