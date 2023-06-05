@@ -12,6 +12,8 @@ const router = express.Router();
 
 
 // Admin Management
+router.get('/profile/getAllStudents',verifyAdmin,verifyToken,AdminController.read);
+router.get('/profile/getAllTeachers',verifyAdmin,verifyToken,AdminController.readTeacher);
 //User Management
 router.get('/notification/get',verifyAdmin,verifyToken,AdminController.notifget);
 router.delete('/notification/delete',verifyAdmin,verifyToken, AdminController.notifdel);
